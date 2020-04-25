@@ -9,25 +9,25 @@
 	- [ ] Máquina de estados
 
 - Diagramas:
-	- [ ] . ponto_final
-	- [ ] ; ponto_virgula
+	- [x] . ponto_final
+	- [x] ; ponto_virgula
 	- [ ] = atribuicao_constante | igual
-	- [ ] := dois_igual
-	- [ ] , virgula
-	- [ ] : dois_pontos
-	- [ ] ( abre_parenteses
-	- [ ] ) fecha_parenteses
-	- [ ] <> diferente
-	- [ ] >= maior_igual
-	- [ ] <= menor_igual
-	- [ ] > maior
-	- [ ] < menor
-	- [ ] + op_mais
-	- [ ] - op_menos
-	- [ ] * op_mult
-	- [ ] / op_div
+	- [x] := dois_igual
+	- [x] , virgula
+	- [x] : dois_pontos
+	- [x] ( abre_parenteses
+	- [x] ) fecha_parenteses
+	- [x] <> diferente
+	- [x] >= maior_igual
+	- [x] <= menor_igual
+	- [x] > maior
+	- [x] < menor
+	- [x] + op_mais
+	- [x] - op_menos
+	- [x] * op_mult
+	- [x] / op_div
 	- [ ] { abre_chaves
 	- [ ] } fecha_chaves
 	- [ ] num_inteiro
 	- [ ] num_real (num . num)
-	- [ ] identificador
+	- [x] identificador
