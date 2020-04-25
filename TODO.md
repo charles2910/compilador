@@ -6,3 +6,4 @@
 	- [ ] Tratamento de erro
 	- [ ] Tabela de palavras reservadas
 	- [ ] Função hash
+	- [ ] Máquina de estados
