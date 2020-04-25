@@ -2,7 +2,7 @@
 	- [ ] Função que lê o arquivo fonte
 	- [ ] Função que coloca no buffer os caracteres
 	- [ ] Buffer (pilha, lista, ... ??)
-	- [ ] Analisador Sintático
+	- [ ] Analisador Léxico
 	- [ ] Tratamento de erro
 	- [ ] Tabela de palavras reservadas
 	- [ ] Função hash
