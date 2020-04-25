@@ -28,6 +28,6 @@
 	- [x] / op_div
 	- [ ] { abre_chaves
 	- [ ] } fecha_chaves
-	- [ ] num_inteiro
-	- [ ] num_real (num . num)
+	- [x] num_inteiro
+	- [x] num_real (num . num)
 	- [x] identificador
