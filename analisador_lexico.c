@@ -123,3 +123,17 @@ char * read_file_line(FILE* program){
 	free(temp_line);
 	return NULL;
 }
+
+/**
+ * Função que recebe o estado atual e o símbolo lido, calcula a transição
+ * 							e retorna o novo estado.
+ */
+int get_next_state(int state, char simbolo) {
+	if (state < 0 || simbolo < 0)
+		return -1;
+
+	int new_state = 0;
+	simbolo -= 32;
+
+	return tableOfTransitions[state][simbolo];
+}
