@@ -60,7 +60,7 @@ int populate_hashmap(map_t in) {
 
 	for(int i = 0; i < SIZE_TAB_RESERVADAS; i++) {
 		ok = hashmap_put(in, tab_reservados[i].string, &(tab_reservados[i]));
-		if(!ok) {
+		if(ok) {
 			printf("Erro em adicionar %d palavra no hashmap.\n", i);
 			return -1;
 		}
