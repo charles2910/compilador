@@ -4,7 +4,7 @@
 #include "hashmap.h"
 
 char* read_file_line(FILE* program);
-void lexic_analizer();
+void load_file(char * file);
 
 // Qf1 => Q11, Qf2 = Q12, Qf3 = Q13 e assim sucessivamente
 // Q98 = QErro1, Q99 = QErro2
@@ -21,18 +21,23 @@ int tableOfTransitions[8][80] = {
 	 {51,13,13,13,13, 13, 13,13, 13, 13, 13, 13,13,13,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 98, 98, 98, 13}
 };
 
-void main(void) {
+void main(int argc, char * argv[]) {
+	/* Declaração do hashmap */
 	map_t map;
-
+	/* Inicialização do hashmap */
 	map = hashmap_new();
 	populate_hashmap(map);
+	/* Verifica se devemos utilizar o arquivo de teste, ou um fornecido
+								pelo usuário */
+	char * arquivo = NULL;
+	if(argc > 1)
+		arquivo = argv[1];
+	load_file(arquivo);
 
-	lexic_analizer();
-
-	return;
+	return 0;
 }
 
-void lexic_analizer(){
+void load_file(char * file){
 	char file_name[] = "meu_programa.txt";
 	char * line = NULL;
 
