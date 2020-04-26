@@ -4,7 +4,7 @@
 	- [x] Buffer (pilha, lista, ... ??)
 	- [ ] Analisador Léxico
 	- [ ] Tratamento de erro
-	- [ ] Tabela de palavras reservadas
+	- [x] Tabela de palavras reservadas
 	- [x] Função hash
 	- [ ] Máquina de estados
 
