@@ -1,7 +1,7 @@
 - Tarefas:
-	- [ ] Função que lê o arquivo fonte
-	- [ ] Função que coloca no buffer os caracteres
-	- [ ] Buffer (pilha, lista, ... ??)
+	- [x] Função que lê o arquivo fonte
+	- [x] Função que coloca no buffer os caracteres
+	- [x] Buffer (pilha, lista, ... ??)
 	- [ ] Analisador Léxico
 	- [ ] Tratamento de erro
 	- [ ] Tabela de palavras reservadas
