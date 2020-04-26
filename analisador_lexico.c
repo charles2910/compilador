@@ -2,11 +2,11 @@
 #include <stdlib.h>
 
 typedef struct {
-	char string[];
-	char token[];
+	char * string;
+	char * token;
 } par_token;
 
-par_token * tab_reservados[] = {
+par_token tab_reservados[] = {
 	{"program", "<PROGRAM>"},
 	{"ident", "<IDENT>"},
 	{";", "<PONTO_VIRGULA>"},
@@ -47,4 +47,3 @@ par_token * tab_reservados[] = {
 	{"{", "<ABRE_CHAVE>"},
 	{"}", "<FECHA_CHAVE>"}
 };
-	
