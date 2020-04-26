@@ -28,7 +28,7 @@ void lexic_analizer(){
 		line = read_file_line(program);
 	}
 	
-
+	fclose(program);
 	free(line);
 	free(program);
 
