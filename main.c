@@ -2,19 +2,17 @@
 #include <string.h>
 #include <stdlib.h>
 
-FILE* read_file_line();
-
+char* read_file_line(FILE* program);
+void lexic_analizer();
 void main(void) {
-	read_file_line();
+	lexic_analizer();
 
 	return;
 }
 
-FILE* read_file_line(){
+void lexic_analizer(){
 	char file_name[] = "meu_programa.txt";
 	char * line = NULL;
-	__ssize_t line_size;
-  	size_t line_buf_size = 0;
 
 	FILE *program = fopen(file_name, "r");
 
@@ -23,21 +21,29 @@ FILE* read_file_line(){
 		exit(EXIT_FAILURE);
 	}
 
-	int line_count = 0;
-
-	line_size = getline(&line, &line_buf_size, program);
-
-	while(line_size > 0){
-		printf("%d", line_size);
+	line = read_file_line(program);
+	while (line != NULL){
 		printf("%s", line);
-		printf("%c", line[0]);
-		line_size = getline(&line, &line_buf_size, program);
-		getchar();
+		// HERE WE'LL CALL THE LEXIC ANALIZER FUNCTION WITH 'LINE' PARAMETER 
+		line = read_file_line(program);
 	}
+	
 
 	free(line);
+	free(program);
 
-	fclose(program);
+}
 
-	return EXIT_SUCCESS;
+char* read_file_line(FILE* program){
+	char * temp_line = NULL;
+	__ssize_t line_size;
+  	size_t line_buf_size = 0;
+
+	line_size = getline(&temp_line, &line_buf_size, program);
+
+	if(line_size > 0)
+		return temp_line;
+	
+	free(temp_line);
+	return NULL;
 }
