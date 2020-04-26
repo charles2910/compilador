@@ -2,9 +2,17 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "hashmap.h"
+
 char* read_file_line(FILE* program);
 void lexic_analizer();
+
 void main(void) {
+	map_t map;
+
+	hashmap_new(map);
+	populate_hashmap(map);
+
 	lexic_analizer();
 
 	return;
