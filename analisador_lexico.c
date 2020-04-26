@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "hashmap.h"
+
+#define SIZE_TAB_RESERVADAS 39		/* Tamanho da tabela de palavras reservadas. */ 
+
 typedef struct {
 	char * string;
 	char * token;
@@ -47,3 +51,20 @@ par_token tab_reservados[] = {
 	{"{", "<ABRE_CHAVE>"},
 	{"}", "<FECHA_CHAVE>"}
 };
+
+/**
+ * Função inclui no hashmap as palavras reservadas. Retorna 0 em sucesso.
+ */
+int populate_hashmap(map_t in) {
+	int ok = 0;
+
+	for(int i = 0; i < SIZE_TAB_RESERVADAS; i++) {
+		ok = hashmap_put(in, tab_reservados[i].string, &(tab_reservados[i]));
+		if(!ok) {
+			printf("Erro em adicionar %d palavra no hashmap.\n", i);
+			return -1;
+		}
+	}
+	
+	return 0;
+}
