@@ -5,10 +5,7 @@
 #include "hashmap.h"
 #include "analisador_lexico.h"
 
-char* read_file_line(FILE* program);
-void load_file(char * file);
-
-void main(int argc, char * argv[]) {
+int main(int argc, char * argv[]) {
 	/* Declaração do hashmap */
 	map_t map;
 	/* Inicialização do hashmap */
