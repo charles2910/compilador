@@ -10,7 +10,7 @@ void lexic_analizer();
 void main(void) {
 	map_t map;
 
-	hashmap_new(map);
+	map = hashmap_new();
 	populate_hashmap(map);
 
 	lexic_analizer();
