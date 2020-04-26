@@ -4,13 +4,6 @@
 #include "hashmap.h"
 #include "analisador_lexico.h"
 
-#define SIZE_TAB_RESERVADAS 39		/* Tamanho da tabela de palavras reservadas. */ 
-
-typedef struct {
-	char * string;
-	char * token;
-} par_token;
-
 par_token tab_reservados[] = {
 	{"program", "<PROGRAM>"},
 	{"ident", "<IDENT>"},
@@ -115,7 +108,7 @@ void load_file(char * file){
 /**
  * Função que lê e retorna uma linha do arquivo aberto.
  */
-char* read_file_line(FILE* program){
+char * read_file_line(FILE* program){
 	char * temp_line = NULL;
 	__ssize_t line_size;
   	size_t line_buf_size = 0;
