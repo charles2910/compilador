@@ -5,7 +5,7 @@
 	- [ ] Analisador Léxico
 	- [ ] Tratamento de erro
 	- [ ] Tabela de palavras reservadas
-	- [ ] Função hash
+	- [x] Função hash
 	- [ ] Máquina de estados
 
 - Diagramas:
