@@ -132,7 +132,6 @@ int get_next_state(int state, char simbolo) {
 	if (state < 0 || simbolo < 0)
 		return -1;
 
-	int new_state = 0;
 	simbolo -= 32;
 
 	return tableOfTransitions[state][simbolo];
