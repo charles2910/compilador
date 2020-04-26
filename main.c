@@ -5,20 +5,25 @@
 #include "hashmap.h"
 
 char* read_file_line(FILE* program);
-void lexic_analizer();
+void load_file(char * file);
 
-void main(void) {
+void main(int argc, char * argv[]) {
+	/* Declaração do hashmap */
 	map_t map;
-
+	/* Inicialização do hashmap */
 	map = hashmap_new();
 	populate_hashmap(map);
+	/* Verifica se devemos utilizar o arquivo de teste, ou um fornecido
+								pelo usuário */
+	char * arquivo = NULL;
+	if(argc > 1)
+		arquivo = argv[1];
+	load_file(arquivo);
 
-	lexic_analizer();
-
-	return;
+	return 0;
 }
 
-void lexic_analizer(){
+void load_file(char * file){
 	char file_name[] = "meu_programa.txt";
 	char * line = NULL;
 
