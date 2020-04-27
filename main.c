@@ -24,7 +24,9 @@ int main(int argc, char * argv[]) {
 	if(argc > 1)
 		arquivo = argv[1];
 	int size = load_file(arquivo, buffer);
-	printf("Size of buffer: %d\n", size);
+	printf("Size of buffer: %d\n\n", size);
 
+	char * posicao = buffer;
+	analise_lexica(buffer, posicao, size);
 	return 0;
 }

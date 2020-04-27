@@ -222,24 +222,24 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 			par_token token_erro2;
 			token_erro2.string = (char) current_char;
 			token_erro2.token = "erro(\"caractere não permitido\")";
-			//print_token_erro(&token_erro2);
+			print_token_erro(&token_erro2);
 			return posicao;
 		} else if (current_state == 99) {
 			par_token token_erro1;
 			token_erro1.string = (char) current_char;
 			token_erro1.token = "erro(\"caractere não permitido\")";
-			//print_token_erro(&token_erro1);
+			print_token_erro(&token_erro1);
 			return posicao;
 		}
 
-		//final_state = is_final_state(current_state);
+		final_state = is_final_state(current_state);
 
 		if (!final_state) {
 			str_length++;
 			continue;
 		}
 
-		//should_rollback = verify_rollback_state(current_state);
+		should_rollback = verify_rollback_state(current_state);
 
 		printf("\n VOLTO?? %d\n", should_rollback);
 
@@ -260,7 +260,9 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 		switch (current_state) {
 			case 11: /* é um identificador*/
 				/*cria e printa par_token */
-				break;
+				final_par_token = get_par_token(str);
+				print_token(final_par_token);
+				return posicao;
 			case 12: /* é um número inteiro */
 				/*cria e printa par_token */
 				break;
@@ -269,8 +271,8 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 				break;
 			default:
 				final_par_token = get_par_token(str);
-				//print_token(final_par_token)
-				break;
+				print_token(final_par_token);
+				return posicao;
 		}
 	}
 	printf("lexic\n");
@@ -288,24 +290,6 @@ int verify_rollback_state(int state)
 	return 0;
 }
 
-par_token* get_par_token(char * string) {
-	extern map_t map;
-	if (!string) {
-		printf("\nErro em get_par_token: parâmetro string nulo.\n");
-		return NULL;
-	} else if (!map) {
-		printf("\nErro em get_par_token: parâmetro map nulo.\n");
-		return NULL;
-	}
-	
-	par_token * par;
-	int erro = hashmap_get(map, string, &par);
-
-	if (erro)
-		return NULL;
-	else
-		return par;
-}	
 int is_final_state(int state)
 {
 	return (state >= 11 && state <= 32);
@@ -315,5 +299,12 @@ int print_token_erro(par_token * par) {
 	if (!par)
 		return -1;
 	printf("%c, %s\n", par->string[0], par->token);
+	return 0;
+}
+
+int print_token(par_token * par) {
+	if (!par)
+		return -1;
+	printf("%s, %s\n", par->string, par->token);
 	return 0;
 }

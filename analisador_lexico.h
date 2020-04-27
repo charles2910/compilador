@@ -27,3 +27,5 @@ par_token * get_par_token(char *);
 int is_final_state(int state);
 
 int print_token_erro(par_token *);
+
+int print_token(par_token *);
