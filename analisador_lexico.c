@@ -188,33 +188,49 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 			case 8: /* BS ou \b => deve ser consumido */
 				if (str_length == 0)
 					consome = 1;
-					break;
+				else
+					current_char = 32;
+				break;
 			case 9: /* HT ou \t => deve ser consumido */
 				if (str_length == 0)
 					consome = 1;
-					break;
+				else
+					current_char = 32;
+				break;
 			case 10: /* LF ou \n => deve ser consumido */
 				if (str_length == 0)
 					consome = 1;
-					break;
+				else
+					current_char = 32;
+				break;
 			case 11: /* VT ou \v => deve ser consumido */
 				if (str_length == 0)
 					consome = 1;
-					break;
+				else
+					current_char = 32;
+				break;
 			case 12: /* FF ou \f => deve ser consumido */
 				if (str_length == 0)
 					consome = 1;
-					break;
+				else
+					current_char = 32;
+				break;
 			case 13: /* CR ou \r => deve ser consumido */
 				if (str_length == 0)
 					consome = 1;
-					break;
+				else
+					current_char = 32;
+				break;
 			case 32: /* (espaço) => deve ser consumido */
 				if (str_length == 0)
 					consome = 1;
-					break;
+				break;
 		}
-		
+		/* Checagem para ver se não é um símbolo q não pertence à linguagem */
+		if(((current_char > 32 && current_char < 40) || current_char == 63 || current_char == 64 || current_char == 124 || current_char == 126 || (current_char > 90 && current_char < 97)) &&(str_length > 0)) {
+			current_char = 32;
+		}
+
 		posicao++;
 		if (consome) {
 			consome = 0;
@@ -225,13 +241,15 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 
 		if (current_state == 98) {
 			par_token * token_erro2 = (par_token *) malloc(sizeof(par_token));
-			token_erro2->string = (char) current_char;
+			strncpy(token_erro2->string, str, 2);
+			//token_erro2->string[0] = (char) current_char;
 			token_erro2->token = "erro(\"caractere não permitido\")";
 			print_token_erro(token_erro2);
 			return posicao;
 		} else if (current_state == 99) {
 			par_token * token_erro1 = (par_token *) malloc(sizeof(par_token));
-			token_erro1->string = (char) current_char;
+			token_erro1->string = " ";
+			token_erro1->string[0] = (char) current_char;
 			token_erro1->token = "erro(\"caractere não permitido\")";
 			print_token_erro(token_erro1);
 			return posicao;
@@ -247,8 +265,6 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 		str_length++;
 
 		should_rollback = verify_rollback_state(current_state);
-
-		//printf("\n VOLTO?? %d\n", should_rollback);
 
 		if (should_rollback) {
 			posicao--;
@@ -266,7 +282,6 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 
 		switch (current_state) {
 			case 11: /* é um identificador*/
-				/*cria e printa par_token */
 				final_par_token = get_par_token(str);
 				if (!final_par_token) {
 					final_par_token = (par_token *) malloc(sizeof(par_token));
@@ -276,19 +291,22 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 				print_token(final_par_token);
 				return posicao;
 			case 12: /* é um número inteiro */
-				/*cria e printa par_token */
+				final_par_token = (par_token *) malloc(sizeof(par_token));
+				final_par_token->string = str;
+				final_par_token->token = "<NUM_INTEIRO>";
+				print_token(final_par_token);
+				return posicao;
 				break;
 			case 13: /* é um número real */
-				/*cria e printa par_token */
+				final_par_token = (par_token *) malloc(sizeof(par_token));
+				final_par_token->string = str;
+				final_par_token->token = "<NUM_REAL>";
+				print_token(final_par_token);
+				return posicao;
 				break;
 		}
 
-		if (str_length > 0) {
-			/*	str_length++;
-			for(int i = 0; i < str_length; i++) {
-				caracter2[i] = *(posicao - str_length + i);
-			}
-			caracter2[str_length] = '\0';*/
+		if (str_length > 1) {
 			strncpy(caracter2, str, 3);
 			final_par_token = get_par_token(caracter2);
 			print_token(final_par_token);
@@ -300,7 +318,6 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 			return posicao;
 		}
 	}
-	printf("lexic\n");
 	return posicao;
 }
 
@@ -323,7 +340,7 @@ int is_final_state(int state)
 int print_token_erro(par_token * par) {
 	if (!par)
 		return -1;
-	printf("%c, %s\n", par->string[0], par->token);
+	printf("%s, %s\n", par->string, par->token);
 	return 0;
 }
 
