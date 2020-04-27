@@ -12,7 +12,7 @@ main.o: main.c hashmap.h analisador_lexico.h
 hashmap.o: hashmap.c hashmap.h
 	gcc -o hashmap.o hashmap.c -c -Wall
 
-analisador_lexico.o: analisador_lexico.c hashmap.h analisador_lexico.h
+analisador_lexico.o: analisador_lexico.c hashmap.h analisador_lexico.h main.o
 	gcc -o analisador_lexico.o analisador_lexico.c -c -Wall
 
 clean:
