@@ -173,7 +173,8 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 		str_length = 0, 
 		current_char = 1,
 		should_rollback,
-		final_state;
+		final_state,
+		consome;
 
 	char str[64];
 
@@ -184,20 +185,36 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 			case 0: /* NULL indica fim do buffer */
 				break;
 			case 8: /* BS ou \b => deve ser consumido */
-				if (str_length == 0) break;
+				if (str_length == 0)
+					consome = 1;
+					break;
 			case 9: /* HT ou \t => deve ser consumido */
-				if (str_length == 0) break;
+				if (str_length == 0)
+					consome = 1;
+					break;
 			case 10: /* LF ou \n => deve ser consumido */
-				if (str_length == 0) break;
+				if (str_length == 0)
+					consome = 1;
+					break;
 			case 11: /* VT ou \v => deve ser consumido */
-				if (str_length == 0) break;
+				if (str_length == 0)
+					consome = 1;
+					break;
 			case 12: /* FF ou \f => deve ser consumido */
-				if (str_length == 0) break;
+				if (str_length == 0)
+					consome = 1;
+					break;
 			case 13: /* CR ou \r => deve ser consumido */
-				if (str_length == 0) break;
+				if (str_length == 0)
+					consome = 1;
+					break;
 		}
 		
 		posicao++;
+		if (consome) {
+			consome = 0;
+			continue;
+		}
 
 		current_state = get_next_state(current_state, current_char);
 
@@ -205,13 +222,13 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 			par_token token_erro2;
 			token_erro2.string = (char) current_char;
 			token_erro2.token = "erro(\"caractere não permitido\")";
-			//print_token(token_erro2);
+			//print_token_erro(&token_erro2);
 			return posicao;
 		} else if (current_state == 99) {
 			par_token token_erro1;
 			token_erro1.string = (char) current_char;
 			token_erro1.token = "erro(\"caractere não permitido\")";
-			//print_token(token_erro1);
+			//print_token_erro(&token_erro1);
 			return posicao;
 		}
 
@@ -294,3 +311,9 @@ int is_final_state(int state)
 	return (state >= 11 && state <= 32);
 }
 
+int print_token_erro(par_token * par) {
+	if (!par)
+		return -1;
+	printf("%c, %s\n", par->string[0], par->token);
+	return 0;
+}
