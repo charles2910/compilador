@@ -19,3 +19,5 @@ par_token * get_par_token(char *);
 char * new_buffer();
 
 char * analise_lexica(char *, char *, int);
+
+int print_token_erro(par_token *);
