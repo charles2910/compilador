@@ -1,4 +1,5 @@
 #define SIZE_TAB_RESERVADAS 39		/* Tamanho da tabela de palavras reservadas. */ 
+#define BUFFER_SIZE 4096
 
 typedef struct {
 	char * string;
@@ -14,3 +15,5 @@ char * read_file_line(FILE *);
 int get_next_state(int, char);
 
 par_token * get_par_token(char *);
+
+char * new_buffer();

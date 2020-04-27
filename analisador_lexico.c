@@ -150,4 +150,9 @@ par_token * get_par_token(char * string) {
 		return NULL;
 	else
 		return par;
-}	
+}
+
+char * new_buffer() {
+	char * buffer = (char *) malloc(BUFFER_SIZE);
+	return buffer;
+}
