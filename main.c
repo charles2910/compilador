@@ -27,6 +27,8 @@ int main(int argc, char * argv[]) {
 	printf("Size of buffer: %d\n\n", size);
 
 	char * posicao = buffer;
-	analise_lexica(buffer, posicao, size);
+	while (posicao != (buffer + size)) {
+		posicao = analise_lexica(buffer, posicao, size);
+	}
 	return 0;
 }

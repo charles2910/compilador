@@ -176,7 +176,7 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 		final_state,
 		consome;
 
-	char str[64];
+	char str[64], caracter[2];
 
 	while(current_char) {
 		current_char = *posicao;
@@ -219,16 +219,16 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 		current_state = get_next_state(current_state, current_char);
 
 		if (current_state == 98) {
-			par_token token_erro2;
-			token_erro2.string = (char) current_char;
-			token_erro2.token = "erro(\"caractere não permitido\")";
-			print_token_erro(&token_erro2);
+			par_token * token_erro2 = (par_token *) malloc(sizeof(par_token));
+			token_erro2->string = (char) current_char;
+			token_erro2->token = "erro(\"caractere não permitido\")";
+			print_token_erro(token_erro2);
 			return posicao;
 		} else if (current_state == 99) {
-			par_token token_erro1;
-			token_erro1.string = (char) current_char;
-			token_erro1.token = "erro(\"caractere não permitido\")";
-			print_token_erro(&token_erro1);
+			par_token * token_erro1 = (par_token *) malloc(sizeof(par_token));
+			token_erro1->string = (char) current_char;
+			token_erro1->token = "erro(\"caractere não permitido\")";
+			print_token_erro(token_erro1);
 			return posicao;
 		}
 
@@ -270,7 +270,8 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 				/*cria e printa par_token */
 				break;
 			default:
-				final_par_token = get_par_token(str);
+				caracter[0] = (char) current_char;
+				final_par_token = get_par_token(caracter);
 				print_token(final_par_token);
 				return posicao;
 		}
