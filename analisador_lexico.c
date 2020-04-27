@@ -99,8 +99,6 @@ void load_file(char * file){
 	
 	fclose(program);
 	free(line);
-	free(program);
-
 }
 
 /**
