@@ -79,45 +79,56 @@ int populate_hashmap(map_t in) {
 /**
  * Função que carrega um arquivo fonte passado como parâmetro.
  */
-void load_file(char * file){
+int load_file(char * file, char * buffer){
 	if (!file)
 		file = "meu_programa.txt";
 
-	char * line = NULL;
+	int buffer_size = 0;
 
 	FILE *program = fopen(file, "r");
 
-	if(program == NULL){
+	if(!program){
 		printf("Your file was not found");
 		exit(EXIT_FAILURE);
 	}
 
-	line = read_file_line(program);
-	while (line != NULL){
-		printf("%s", line);
+	buffer_size = fill_buffer(program, buffer);
+
+	char * pos = buffer;
+	while (*pos != NULL || (pos - buffer) < buffer_size) {
+		printf("%c", *pos);
 		// HERE WE'LL CALL THE LEXIC ANALIZER FUNCTION WITH 'LINE' PARAMETER 
-		line = read_file_line(program);
+		//line = read_file_line(program);
+		pos++;
+		
 	}
 	
 	fclose(program);
-	free(line);
+	return buffer_size;
 }
 
 /**
  * Função que lê e retorna uma linha do arquivo aberto.
  */
-char * read_file_line(FILE* program){
-	char * temp_line = NULL;
-	__ssize_t line_size;
-  	size_t line_buf_size = 0;
+int fill_buffer(FILE * program, char * buffer){
+	char c, * pos;
+	int buffer_size = 0;
 
-	line_size = getline(&temp_line, &line_buf_size, program);
+	pos = buffer;
 
-	if(line_size > 0)
-		return temp_line;
-	
-	free(temp_line);
-	return NULL;
+	while (c != EOF || buffer_size < BUFFER_SIZE - 1) {
+		c = getc(program);
+		if (feof(program))
+			break;
+		*pos = c;
+		pos++;
+		buffer_size++;
+	}
+
+	*pos = 0;
+	buffer_size++;
+
+	return buffer_size;
 }
 
 /**
