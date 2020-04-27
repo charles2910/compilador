@@ -17,3 +17,5 @@ int get_next_state(int, char);
 par_token * get_par_token(char *);
 
 char * new_buffer();
+
+par_token ** analise_lexica(char *, int);

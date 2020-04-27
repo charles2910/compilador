@@ -141,7 +141,7 @@ int get_next_state(int state, char simbolo) {
 
 	simbolo -= 32;
 
-	return table_of_transitions[state][simbolo];
+	return table_of_transitions[state][(int) simbolo];
 }
 
 par_token * get_par_token(char * string) {
@@ -166,4 +166,8 @@ par_token * get_par_token(char * string) {
 char * new_buffer() {
 	char * buffer = (char *) malloc(BUFFER_SIZE);
 	return buffer;
+}
+
+par_token ** analise_lexica(char * buffer, int buffer_size) {
+	printf("lexic\n");
 }
