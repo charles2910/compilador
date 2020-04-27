@@ -12,3 +12,5 @@ void load_file(char *);
 char * read_file_line(FILE *);
 
 int get_next_state(int, char);
+
+par_token * get_par_token(char *);
