@@ -80,10 +80,12 @@ int populate_hashmap(map_t in) {
  * Função que carrega um arquivo fonte passado como parâmetro.
  */
 void load_file(char * file){
-	char file_name[] = "meu_programa.txt";
+	if (!file)
+		file = "meu_programa.txt";
+
 	char * line = NULL;
 
-	FILE *program = fopen(file_name, "r");
+	FILE *program = fopen(file, "r");
 
 	if(program == NULL){
 		printf("Your file was not found");
