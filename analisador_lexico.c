@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "hashmap.h"
 #include "analisador_lexico.h"
@@ -176,7 +177,7 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 		final_state,
 		consome;
 
-	char str[64], caracter[2];
+	char str[64], caracter[2], caracter2[3];
 
 	while(current_char) {
 		current_char = *posicao;
@@ -239,13 +240,15 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 			continue;
 		}
 
+		str_length++;
+
 		should_rollback = verify_rollback_state(current_state);
 
-		printf("\n VOLTO?? %d\n", should_rollback);
+		//printf("\n VOLTO?? %d\n", should_rollback);
 
 		if (should_rollback) {
 			posicao--;
-			//str_length--;
+			str_length--;
 		}
 
 		if (str_length > 0) {
@@ -269,11 +272,23 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 			case 13: /* é um número real */
 				/*cria e printa par_token */
 				break;
-			default:
-				caracter[0] = (char) current_char;
-				final_par_token = get_par_token(caracter);
-				print_token(final_par_token);
-				return posicao;
+		}
+
+		if (str_length > 0) {
+			/*	str_length++;
+			for(int i = 0; i < str_length; i++) {
+				caracter2[i] = *(posicao - str_length + i);
+			}
+			caracter2[str_length] = '\0';*/
+			strncpy(caracter2, str, 3);
+			final_par_token = get_par_token(caracter2);
+			print_token(final_par_token);
+			return posicao;
+		} else {
+			caracter[0] = (char) current_char;
+			final_par_token = get_par_token(caracter);
+			print_token(final_par_token);
+			return posicao;
 		}
 	}
 	printf("lexic\n");
