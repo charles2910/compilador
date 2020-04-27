@@ -277,6 +277,40 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 	return posicao;
 }
 
+int verify_rollback_state(int state)
+{
+	int roll_back_states[6] = {11, 12, 13, 15, 23, 25};
+	int i;
+	for(i = 0; i <  6; i++){
+		if(roll_back_states[i] == state)
+			return 1;
+	}
+	return 0;
+}
+
+par_token* get_par_token(char * string) {
+	extern map_t map;
+	if (!string) {
+		printf("\nErro em get_par_token: parâmetro string nulo.\n");
+		return NULL;
+	} else if (!map) {
+		printf("\nErro em get_par_token: parâmetro map nulo.\n");
+		return NULL;
+	}
+	
+	par_token * par;
+	int erro = hashmap_get(map, string, &par);
+
+	if (erro)
+		return NULL;
+	else
+		return par;
+}	
+int is_final_state(int state)
+{
+	return (state >= 11 && state <= 32);
+}
+
 int print_token_erro(par_token * par) {
 	if (!par)
 		return -1;
