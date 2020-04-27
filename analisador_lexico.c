@@ -209,6 +209,10 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 				if (str_length == 0)
 					consome = 1;
 					break;
+			case 32: /* (espaço) => deve ser consumido */
+				if (str_length == 0)
+					consome = 1;
+					break;
 		}
 		
 		posicao++;
@@ -264,6 +268,11 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 			case 11: /* é um identificador*/
 				/*cria e printa par_token */
 				final_par_token = get_par_token(str);
+				if (!final_par_token) {
+					final_par_token = (par_token *) malloc(sizeof(par_token));
+					final_par_token->string = str;
+					final_par_token->token = "<IDENT>";
+				}
 				print_token(final_par_token);
 				return posicao;
 			case 12: /* é um número inteiro */
