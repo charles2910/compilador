@@ -5,9 +5,10 @@
 #include "hashmap.h"
 #include "analisador_lexico.h"
 
+/* Declaração do hashmap */
+map_t map = NULL;
+
 int main(int argc, char * argv[]) {
-	/* Declaração do hashmap */
-	map_t map;
 	/* Inicialização do hashmap */
 	map = hashmap_new();
 	populate_hashmap(map);
