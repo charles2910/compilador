@@ -8,9 +8,9 @@ typedef struct {
 
 int populate_hashmap(map_t);
 
-void load_file(char *);
+int load_file(char *, char *);
 
-char * read_file_line(FILE *);
+int fill_buffer(FILE *, char *);
 
 int get_next_state(int, char);
 
