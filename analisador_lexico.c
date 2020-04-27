@@ -138,6 +138,20 @@ int get_next_state(int state, char simbolo) {
 }
 
 par_token * get_par_token(char * string) {
-	if (!string)
+	extern map_t map;
+	if (!string) {
+		printf("\nErro em get_par_token: parâmetro string nulo.\n");
 		return NULL;
+	} else if (!map) {
+		printf("\nErro em get_par_token: parâmetro map nulo.\n");
+		return NULL;
+	}
+	
+	par_token * par;
+	int erro = hashmap_get(map, string, &par);
+
+	if (erro)
+		return NULL;
+	else
+		return par;
 }	
