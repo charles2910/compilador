@@ -168,6 +168,94 @@ char * new_buffer() {
 	return buffer;
 }
 
-par_token ** analise_lexica(char * buffer, int buffer_size) {
+char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
+	int 	current_state = 0, 
+		str_length = 0, 
+		current_char = 1,
+		should_rollback,
+		final_state;
+
+	char str[64];
+
+	while(current_char) {
+		current_char = *posicao;
+
+		switch(current_char) {
+			case 0: /* NULL indica fim do buffer */
+				break;
+			case 8: /* BS ou \b => deve ser consumido */
+				if (str_length == 0) break;
+			case 9: /* HT ou \t => deve ser consumido */
+				if (str_length == 0) break;
+			case 10: /* LF ou \n => deve ser consumido */
+				if (str_length == 0) break;
+			case 11: /* VT ou \v => deve ser consumido */
+				if (str_length == 0) break;
+			case 12: /* FF ou \f => deve ser consumido */
+				if (str_length == 0) break;
+			case 13: /* CR ou \r => deve ser consumido */
+				if (str_length == 0) break;
+		}
+		
+		posicao++;
+
+		current_state = get_next_state(current_state, current_char);
+
+		if (current_state == 98) {
+			par_token token_erro2;
+			token_erro2.string = (char) current_char;
+			token_erro2.token = "erro(\"caractere não permitido\")";
+			//print_token(token_erro2);
+			return posicao;
+		} else if (current_state == 99) {
+			par_token token_erro1;
+			token_erro1.string = (char) current_char;
+			token_erro1.token = "erro(\"caractere não permitido\")";
+			//print_token(token_erro1);
+			return posicao;
+		}
+
+		//final_state = is_final_state(current_state);
+
+		if (!final_state) {
+			str_length++;
+			continue;
+		}
+
+		//should_rollback = verify_rollback_state(current_state);
+
+		printf("\n VOLTO?? %d\n", should_rollback);
+
+		if (should_rollback) {
+			posicao--;
+			//str_length--;
+		}
+
+		if (str_length > 0) {
+			for(int i = 0; i < str_length; i++) {
+				str[i] = *(posicao - str_length + i);
+			}
+			str[str_length] = '\0';
+		}
+
+		par_token * final_par_token;
+
+		switch (current_state) {
+			case 11: /* é um identificador*/
+				/*cria e printa par_token */
+				break;
+			case 12: /* é um número inteiro */
+				/*cria e printa par_token */
+				break;
+			case 13: /* é um número real */
+				/*cria e printa par_token */
+				break;
+			default:
+				final_par_token = get_par_token(str);
+				//print_token(final_par_token)
+				break;
+		}
+	}
 	printf("lexic\n");
+	return posicao;
 }
