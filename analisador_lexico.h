@@ -19,3 +19,9 @@ par_token * get_par_token(char *);
 char * new_buffer();
 
 char * analise_lexica(char *, char *, int);
+
+int verify_rollback_state(int state);
+
+par_token* get_par_token(char * string);
+
+int is_final_state(int state);
