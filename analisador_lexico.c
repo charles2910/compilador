@@ -136,3 +136,8 @@ int get_next_state(int state, char simbolo) {
 
 	return tableOfTransitions[state][simbolo];
 }
+
+par_token * get_par_token(char * string) {
+	if (!string)
+		return NULL;
+}	
