@@ -274,6 +274,8 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 		if (should_rollback) {
 			posicao--;
 			str_length--;
+			if(current_state == 1)
+				str_length++;
 		}
 
 		if (str_length > 0) {
