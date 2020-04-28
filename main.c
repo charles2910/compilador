@@ -24,7 +24,6 @@ int main(int argc, char * argv[]) {
 	if(argc > 1)
 		arquivo = argv[1];
 	int size = load_file(arquivo, buffer);
-	printf("\n");
 
 	char * posicao = buffer;
 	while (posicao != (buffer + size)) {

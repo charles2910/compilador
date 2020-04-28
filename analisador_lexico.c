@@ -173,9 +173,9 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 	int 	current_state = 0, 
 		str_length = 0, 
 		current_char = 1,
-		should_rollback,
-		final_state,
-		consome;
+		should_rollback = 0,
+		final_state = 0,
+		consome = 0;
 
 	char str[64], caracter[2], caracter2[3];
 
