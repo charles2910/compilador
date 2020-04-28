@@ -248,9 +248,13 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 			return posicao;
 		} else if (current_state == 99) {
 			par_token * token_erro2 = (par_token *) malloc(sizeof(par_token));
-			token_erro2->string = " ";
-			token_erro2->string[0] = (char) current_char;
-			token_erro2->token = "erro(\"caractere não permitido\")";
+			str_length++;
+			for(int i = 0; i < str_length; i++) {
+				str[i] = *(posicao - str_length + i);
+			}
+			str[str_length] = '\0';
+			token_erro2->string = str;
+			token_erro2->token = "erro(\"Má formação de número\")";
 			print_token_erro(token_erro2);
 			return posicao;
 		}
