@@ -244,7 +244,7 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 			str[0] = (char) current_char;
 			strncpy(token_erro1->string, str, 2);
 			token_erro1->token = "erro(\"caractere não permitido\")";
-			print_token_erro(token_erro1);
+			print_token(token_erro1);
 			return posicao;
 		} else if (current_state == 99) {
 			par_token * token_erro2 = (par_token *) malloc(sizeof(par_token));
@@ -255,7 +255,7 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 			str[str_length] = '\0';
 			token_erro2->string = str;
 			token_erro2->token = "erro(\"Má formação de número\")";
-			print_token_erro(token_erro2);
+			print_token(token_erro2);
 			return posicao;
 		}
 
@@ -339,13 +339,6 @@ int verify_rollback_state(int state)
 int is_final_state(int state)
 {
 	return (state >= 11 && state <= 32);
-}
-
-int print_token_erro(par_token * par) {
-	if (!par)
-		return -1;
-	printf("%s, %s\n", par->string, par->token);
-	return 0;
 }
 
 int print_token(par_token * par) {
