@@ -97,11 +97,7 @@ int load_file(char * file, char * buffer){
 
 	char * pos = buffer;
 	while (*pos != NULL || (pos - buffer) < buffer_size) {
-		//printf("%c", *pos);
-		// HERE WE'LL CALL THE LEXIC ANALIZER FUNCTION WITH 'LINE' PARAMETER 
-		//line = read_file_line(program);
-		pos++;
-		
+		pos++;		
 	}
 	
 	fclose(program);
