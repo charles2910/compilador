@@ -97,7 +97,7 @@ int load_file(char * file, char * buffer){
 
 	char * pos = buffer;
 	while (*pos != NULL || (pos - buffer) < buffer_size) {
-		printf("%c", *pos);
+		//printf("%c", *pos);
 		// HERE WE'LL CALL THE LEXIC ANALIZER FUNCTION WITH 'LINE' PARAMETER 
 		//line = read_file_line(program);
 		pos++;
@@ -242,6 +242,7 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 		if (current_state == 98) {
 			par_token * token_erro1 = (par_token *) malloc(sizeof(par_token));
 			str[0] = (char) current_char;
+			token_erro1->string = (char *) calloc(sizeof(char), 2);
 			strncpy(token_erro1->string, str, 2);
 			token_erro1->token = "erro(\"caractere não permitido\")";
 			print_token(token_erro1);
