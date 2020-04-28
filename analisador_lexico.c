@@ -242,6 +242,10 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 		if (current_state == 98) {
 			par_token * token_erro1 = (par_token *) malloc(sizeof(par_token));
 			str[0] = (char) current_char;
+<<<<<<< HEAD
+=======
+			str[1] = '\0';
+>>>>>>> teste1
 			token_erro1->string = (char *) calloc(sizeof(char), 2);
 			strncpy(token_erro1->string, str, 2);
 			token_erro1->token = "erro(\"caractere não permitido\")";
