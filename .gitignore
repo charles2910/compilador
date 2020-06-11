@@ -1,4 +1,6 @@
 main
 *.out
 *.o
+*.pdf
+*.zip
 .vscode/
