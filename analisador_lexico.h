@@ -4,6 +4,7 @@
 typedef struct {
 	char * string;
 	char * token;
+	int id;
 } par_token;
 
 int populate_hashmap(map_t);
