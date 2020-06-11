@@ -1,4 +1,4 @@
-program teste3;{teste 3 - testando erro de comentário não fechado, checando comportamento com variável não declarada}
+program teste3;{teste 3 - testando erro de comentario nao fechado, checando comportamento com variavel nao declarada}
 var x: integer;
 begin
 read(a);

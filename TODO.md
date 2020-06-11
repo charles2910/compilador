@@ -2,16 +2,16 @@
 	- [x] Função que lê o arquivo fonte
 	- [x] Função que coloca no buffer os caracteres
 	- [x] Buffer (pilha, lista, ... ??)
-	- [ ] Analisador Léxico
-	- [ ] Tratamento de erro
+	- [x] Analisador Léxico
+	- [x] Tratamento de erro
 	- [x] Tabela de palavras reservadas
 	- [x] Função hash
-	- [ ] Máquina de estados
+	- [x] Máquina de estados
 
 - Diagramas:
 	- [x] . ponto_final
 	- [x] ; ponto_virgula
-	- [ ] = atribuicao_constante | igual
+	- [x] = atribuicao_constante | igual
 	- [x] := dois_igual
 	- [x] , virgula
 	- [x] : dois_pontos
