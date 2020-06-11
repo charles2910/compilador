@@ -7,6 +7,10 @@
 	- [x] Tabela de palavras reservadas
 	- [x] Função hash
 	- [x] Máquina de estados
+	- [ ] Transformar gramática do P-- para LL(1)
+		- \<regra\> -> a\<regra2\> | b\<regra3\>
+	- [ ] Para cada regra, definir o conjunto primeiro e seguidor
+	- [ ] Implementar analisador léxico
 
 - Diagramas:
 	- [x] . ponto_final
