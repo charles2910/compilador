@@ -1,5 +1,5 @@
 program teste2;
-{teste 2 - testando erro em numero real e de caracter fora da linguagem, checando uso do if}
+{teste 2 - testando erro em número real e de caracter fora da linguagem, checando uso do if}
 var a: real;
 procedure nomep(x: real);
 begin
