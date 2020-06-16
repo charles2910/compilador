@@ -255,7 +255,16 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 
 		current_state = get_next_state(current_state, current_char);
 
-		if (current_state == 98) {
+		if (current_state == 97) {
+			par_token * token_erro1 = (par_token *) malloc(sizeof(par_token));
+			str[0] = (char) current_char;
+			str[1] = '\0';
+			token_erro1->string = (char *) calloc(sizeof(char), 2);
+			strncpy(token_erro1->string, str, 2);
+			token_erro1->token = "erro(\"fecha parêntesis deve vir após abre parêntesis\")";
+			print_token(token_erro1);
+			return posicao;
+		} else if (current_state == 98) {
 			par_token * token_erro1 = (par_token *) malloc(sizeof(par_token));
 			str[0] = (char) current_char;
 			str[1] = '\0';
