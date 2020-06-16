@@ -228,7 +228,8 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 		current_char = 1,
 		should_rollback = 0,
 		final_state = 0,
-		consome = 0;
+		consome = 0,
+		erro = 0;
 
 	char str[64], caracter[2], caracter2[3];
 
@@ -255,34 +256,10 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 
 		current_state = get_next_state(current_state, current_char);
 
-		if (current_state == 97) {
-			par_token * token_erro1 = (par_token *) malloc(sizeof(par_token));
-			str[0] = (char) current_char;
-			str[1] = '\0';
-			token_erro1->string = (char *) calloc(sizeof(char), 2);
-			strncpy(token_erro1->string, str, 2);
-			token_erro1->token = "erro(\"fecha chaves deve vir após abre chaves\")";
-			print_token(token_erro1);
-			return posicao;
-		} else if (current_state == 98) {
-			par_token * token_erro1 = (par_token *) malloc(sizeof(par_token));
-			str[0] = (char) current_char;
-			str[1] = '\0';
-			token_erro1->string = (char *) calloc(sizeof(char), 2);
-			strncpy(token_erro1->string, str, 2);
-			token_erro1->token = "erro(\"caractere não permitido\")";
-			print_token(token_erro1);
-			return posicao;
-		} else if (current_state == 99) {
-			par_token * token_erro2 = (par_token *) malloc(sizeof(par_token));
-			str_length++;
-			for(int i = 0; i < str_length; i++) {
-				str[i] = *(posicao - str_length + i);
-			}
-			str[str_length] = '\0';
-			token_erro2->string = str;
-			token_erro2->token = "erro(\"Má formação de número\")";
-			print_token(token_erro2);
+		erro = is_error(current_state);
+
+		if (erro) {
+			relata_erro(current_state, posicao, str_length);
 			return posicao;
 		}
 
@@ -356,6 +333,49 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 		}
 	}
 	return posicao;
+}
+
+int is_error(int state) {
+	int error_states[] = {97, 98, 99};
+	for(int i = 0; i <  3; i++){
+		if(error_states[i] == state)
+			return 1;
+	}
+	return 0;
+}
+
+int relata_erro(int state, char * posicao, int str_length) {
+	char str[64];
+	if (state == 97) {
+		par_token * token_erro1 = (par_token *) malloc(sizeof(par_token));
+		str[0] = (char) *(posicao - 1);
+		str[1] = '\0';
+		token_erro1->string = (char *) calloc(sizeof(char), 2);
+		strncpy(token_erro1->string, str, 2);
+		token_erro1->token = "erro(\"fecha chaves deve vir após abre chaves\")";
+		print_token(token_erro1);
+		return 0;
+	} else if (state == 98) {
+		par_token * token_erro1 = (par_token *) malloc(sizeof(par_token));
+		str[0] = (char) *(posicao - 1);
+		str[1] = '\0';
+		token_erro1->string = (char *) calloc(sizeof(char), 2);
+		strncpy(token_erro1->string, str, 2);
+		token_erro1->token = "erro(\"caractere não permitido\")";
+		print_token(token_erro1);
+		return 0;
+	} else if (state == 99) {
+		par_token * token_erro2 = (par_token *) malloc(sizeof(par_token));
+		str_length++;
+		for(int i = 0; i < str_length; i++) {
+			str[i] = *(posicao - str_length + i);
+		}
+		str[str_length] = '\0';
+		token_erro2->string = str;
+		token_erro2->token = "erro(\"Má formação de número\")";
+		print_token(token_erro2);
+		return 0;
+	}
 }
 
 int verify_rollback_state(int state)
