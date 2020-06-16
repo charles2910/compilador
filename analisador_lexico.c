@@ -135,8 +135,10 @@ int fill_buffer(FILE * program, char * buffer){
 int get_next_state(int state, char simbolo) {
 	if (state < 0)
 		return -1;
-	if (simbolo < 0)
+	if (simbolo < 0 && state != 8)
 		return 0;
+	else if (simbolo < 0)
+		return 8;
 	simbolo -= 32;
 
 	return table_of_transitions[state][(int) simbolo];
