@@ -168,7 +168,7 @@ char * new_buffer() {
 	return buffer;
 }
 
-int is_consome(int * current_char, int str_length) {
+int consumir(int * current_char, int str_length) {
 	int consome = 0;
 	switch(*current_char) {
 		case 0: /* NULL indica fim do buffer */
@@ -235,7 +235,7 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 	while(current_char) {
 		current_char = *posicao;
 
-		consome = is_consome(&current_char, str_length);
+		consome = consumir(&current_char, str_length);
 
 		/* Checagem para ver se não é um símbolo q não pertence à linguagem */
 		if(((current_char > 32 && current_char < 40) || current_char == 63 || current_char == 64 || current_char == 124 || current_char == 126 || (current_char > 90 && current_char < 97)) &&(str_length > 0)) {
