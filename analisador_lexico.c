@@ -261,7 +261,7 @@ char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
 			str[1] = '\0';
 			token_erro1->string = (char *) calloc(sizeof(char), 2);
 			strncpy(token_erro1->string, str, 2);
-			token_erro1->token = "erro(\"fecha parêntesis deve vir após abre parêntesis\")";
+			token_erro1->token = "erro(\"fecha chaves deve vir após abre chaves\")";
 			print_token(token_erro1);
 			return posicao;
 		} else if (current_state == 98) {
