@@ -236,12 +236,13 @@ char * get_token(char * buffer, char * posicao, int buffer_size) {
 
 		consome = consumir(&current_char, str_length);
 
+		posicao++;
+
 		/* Checagem para ver se não é um símbolo q não pertence à linguagem */
 		if(((current_char > 32 && current_char < 40) || current_char == 63 || current_char == 64 || current_char == 124 || current_char == 126 || (current_char > 90 && current_char < 97)) &&(str_length > 0)) {
 			current_char = 32;
 		}
 
-		posicao++;
 		if (current_state == 8)
 			consome = 0;
 
