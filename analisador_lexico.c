@@ -43,8 +43,6 @@ par_token tab_reservados[] = {
 	{"/", "<DIV>", 35},
 	{"num_inteiro", "<NUM_INTEIRO>", 36},
 	{"num_real", "<NUM_REAL>", 37},
-	{"{", "<ABRE_CHAVE>", 38},
-	{"}", "<FECHA_CHAVE>", 39}
 };
 
 

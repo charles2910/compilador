@@ -1,4 +1,4 @@
-#define SIZE_TAB_RESERVADAS 39		/* Tamanho da tabela de palavras reservadas. */ 
+#define SIZE_TAB_RESERVADAS 37		/* Tamanho da tabela de palavras reservadas. */ 
 #define BUFFER_SIZE 4096
 
 typedef struct {
