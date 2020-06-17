@@ -1,5 +1,43 @@
 #define SIZE_TAB_RESERVADAS 37		/* Tamanho da tabela de palavras reservadas. */ 
 #define BUFFER_SIZE 4096
+/* Define dos tokens */
+#define PROGRAM				1
+#define IDENT				2
+#define PONTO_VIRGULA		3
+#define PONTO				4
+#define BEGIN				5
+#define END					6
+#define CONST				7
+#define IGUAL				8
+#define VAR					9
+#define DOIS_PONTOS			10
+#define REAL				11
+#define INTEGER				12
+#define VIRGULA				13
+#define PROCEDURE			14
+#define ABRE_PARENTESIS		15
+#define FECHA_PARENTESIS	16
+#define ELSE				17
+#define READ				18
+#define WRITE				19
+#define WHILE				20
+#define DO					21
+#define IF					22
+#define THEN				23
+#define FOR					24
+#define TO					25
+#define DOIS_PONTOS_IGUAL	26
+#define DIFERENTE			27
+#define MAIOR_IGUAL			28
+#define MENOR_IGUAL			29
+#define MAIOR				30
+#define MENOR				31
+#define MAIS				32
+#define MENOS				33
+#define MULT				34
+#define DIV					35
+#define NUM_INTEIRO			36
+#define NUM_REAL			37
 
 typedef struct {
 	char * string;
