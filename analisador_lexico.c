@@ -220,7 +220,7 @@ int consumir(int * current_char, int str_length) {
 }
 
 
-char * analise_lexica(char * buffer, char * posicao, int buffer_size) {
+char * get_token(char * buffer, char * posicao, int buffer_size) {
 	int 	current_state = 0, 
 		str_length = 0, 
 		current_char = 1,

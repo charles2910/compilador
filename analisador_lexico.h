@@ -1,6 +1,6 @@
 #define SIZE_TAB_RESERVADAS 37		/* Tamanho da tabela de palavras reservadas. */ 
 #define BUFFER_SIZE 4096
-/* Define dos tokens */
+/* Define os tokens */
 #define PROGRAM				1
 #define IDENT				2
 #define PONTO_VIRGULA		3
@@ -45,26 +45,41 @@ typedef struct {
 	int id;
 } par_token;
 
-int populate_hashmap(map_t);
+/**
+ * Função inclui no hashmap as palavras reservadas. Retorna 0 em sucesso.
+ */
+int populate_hashmap(map_t )
 
-int load_file(char *, char *);
+/**
+ * Função que carrega um arquivo fonte passado como parâmetro.
+ */
+int load_file(char * , char * )
 
-int fill_buffer(FILE *, char *);
+/**
+ * Função que lê e retorna uma linha do arquivo aberto.
+ */
+int fill_buffer(FILE * , char * )
 
-int get_next_state(int, char);
+/**
+ * Função que recebe o estado atual e o símbolo lido, calcula a transição
+ * e retorna o novo estado.
+ */
+int get_next_state(int , char )
 
-par_token * get_par_token(char *);
+par_token * get_par_token(char * )
 
-char * new_buffer();
+char * new_buffer()
 
-char * analise_lexica(char *, char *, int);
+int consumir(int * , int )
 
-int verify_rollback_state(int);
+char * get_token(char * , char * , int )
 
-par_token * get_par_token(char *);
+int is_error(int )
 
-int is_final_state(int state);
+int relata_erro(int , char * , int )
 
-int print_token_erro(par_token *);
+int verify_rollback_state(int )
 
-int print_token(par_token *);
+int is_final_state(int )
+
+int print_token(par_token * )
