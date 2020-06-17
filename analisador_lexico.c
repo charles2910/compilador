@@ -220,7 +220,7 @@ int consumir(int * current_char, int str_length) {
 }
 
 
-char * get_token(char * buffer, char * posicao, int buffer_size) {
+par_token * get_token(char * buffer, char ** posicao, int buffer_size) {
 	int 	current_state = 0, 
 		str_length = 0, 
 		current_char = 1,
@@ -232,11 +232,11 @@ char * get_token(char * buffer, char * posicao, int buffer_size) {
 	char str[64], caracter[2], caracter2[3];
 
 	while(current_char) {
-		current_char = *posicao;
+		current_char = **posicao;
 
 		consome = consumir(&current_char, str_length);
 
-		posicao++;
+		(*posicao)++;
 
 		/* Checagem para ver se não é um símbolo q não pertence à linguagem */
 		if(((current_char > 32 && current_char < 40) || current_char == 63 || current_char == 64 || current_char == 124 || current_char == 126 || (current_char > 90 && current_char < 97)) &&(str_length > 0)) {
@@ -258,8 +258,8 @@ char * get_token(char * buffer, char * posicao, int buffer_size) {
 		erro = is_error(current_state);
 
 		if (erro) {
-			relata_erro(current_state, posicao, str_length);
-			return posicao;
+			relata_erro(current_state, *posicao, str_length);
+			return NULL;
 		}
 
 		final_state = is_final_state(current_state);
@@ -278,7 +278,7 @@ char * get_token(char * buffer, char * posicao, int buffer_size) {
 		should_rollback = verify_rollback_state(current_state);
 
 		if (should_rollback) {
-			posicao--;
+			(*posicao)--;
 			str_length--;
 			if(current_state == 1)
 				str_length++;
@@ -286,7 +286,7 @@ char * get_token(char * buffer, char * posicao, int buffer_size) {
 
 		if (str_length > 0) {
 			for(int i = 0; i < str_length; i++) {
-				str[i] = *(posicao - str_length + i);
+				str[i] = *(*posicao - str_length + i);
 			}
 			str[str_length] = '\0';
 		}
@@ -302,20 +302,20 @@ char * get_token(char * buffer, char * posicao, int buffer_size) {
 					final_par_token->token = "<IDENT>";
 				}
 				print_token(final_par_token);
-				return posicao;
+				return final_par_token;
 			case 12: /* é um número inteiro */
 				final_par_token = (par_token *) malloc(sizeof(par_token));
 				final_par_token->string = str;
 				final_par_token->token = "<NUM_INTEIRO>";
 				print_token(final_par_token);
-				return posicao;
+				return final_par_token;
 				break;
 			case 13: /* é um número real */
 				final_par_token = (par_token *) malloc(sizeof(par_token));
 				final_par_token->string = str;
 				final_par_token->token = "<NUM_REAL>";
 				print_token(final_par_token);
-				return posicao;
+				return final_par_token;
 				break;
 		}
 
@@ -323,15 +323,15 @@ char * get_token(char * buffer, char * posicao, int buffer_size) {
 			strncpy(caracter2, str, 3);
 			final_par_token = get_par_token(caracter2);
 			print_token(final_par_token);
-			return posicao;
+			return final_par_token;
 		} else {
 			strncpy(caracter, str, 2);
 			final_par_token = get_par_token(caracter);
 			print_token(final_par_token);
-			return posicao;
+			return final_par_token;
 		}
 	}
-	return posicao;
+	return NULL;
 }
 
 int is_error(int state) {

@@ -27,7 +27,7 @@ int main(int argc, char * argv[]) {
 
 	char * posicao = buffer;
 	while (posicao != (buffer + size)) {
-		posicao = analise_lexica(buffer, posicao, size);
+		get_token(buffer, &posicao, size);
 	}
 	return 0;
 }
