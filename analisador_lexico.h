@@ -47,6 +47,12 @@ typedef struct {
 	int id;
 } par_token;
 
+typedef struct {
+	char * buffer;
+	char * posicao;
+	int size;
+} controlador;
+
 /**
  * Função inclui no hashmap as palavras reservadas. Retorna 0 em sucesso.
  */
@@ -74,7 +80,7 @@ char * new_buffer();
 
 int consumir(int * , int );
 
-par_token * get_token(char * , char ** , int );
+par_token * get_token(char ** , int * );
 
 int is_error(int );
 

@@ -25,9 +25,11 @@ int main(int argc, char * argv[]) {
 		arquivo = argv[1];
 	int size = load_file(arquivo, buffer);
 
+	int line = 0;
+
 	char * posicao = buffer;
 	while (posicao != (buffer + size)) {
-		get_token(buffer, &posicao, size);
+		get_token(&posicao, &line);
 	}
 	return 0;
 }

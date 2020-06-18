@@ -220,7 +220,7 @@ int consumir(int * current_char, int str_length) {
 }
 
 
-par_token * get_token(char * buffer, char ** posicao, int buffer_size) {
+par_token * get_token(char ** posicao, int *line) {
 	int 	current_state = 0, 
 		str_length = 0, 
 		current_char = 1,
@@ -231,8 +231,15 @@ par_token * get_token(char * buffer, char ** posicao, int buffer_size) {
 
 	char str[64], caracter[2], caracter2[3];
 
+	if (*line == 0)
+		(*line)++;
+
 	while(current_char) {
 		current_char = **posicao;
+
+		if (current_char == '\n') {
+			(*line)--;
+		}
 
 		consome = consumir(&current_char, str_length);
 
