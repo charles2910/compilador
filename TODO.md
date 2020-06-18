@@ -12,6 +12,8 @@
 		- \<regra\> -> a\<regra2\> | b\<regra3\>
 	- [x] Para cada regra, definir o conjunto primeiro e seguidor
 	- [ ] Implementar analisador léxico
+	- [ ] Fazer tratamento de erros
+	- [ ] Escrever relatório
 
 - Diagramas:
 	- [x] . ponto_final
