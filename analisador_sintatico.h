@@ -38,6 +38,14 @@
 #define NUM_INTEIRO "<NUM_INTEIRO>"
 #define NUM_REAL "<NUM_REAL>"
 
+#define CASE_FOR 24
+#define CASE_BEGIN 5
+#define CASE_WRITE 19
+#define CASE_READ 18
+#define CASE_WHILE 20
+#define CASE_IF 22
+#define CASE_IDENT 2
+
 typedef struct {
 	char * token;
 	char * primeiros;

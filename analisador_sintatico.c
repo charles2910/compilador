@@ -4,6 +4,7 @@
 
 #include "analisador_lexico.h"
 #include "analisador_sintatico.h"
+#include "hashmap.h"
 
 table_tokens_seguidores_primeiros tabela[] = {
     {"<PROGRAMA>", "program", "λ"},
@@ -41,10 +42,17 @@ table_tokens_seguidores_primeiros tabela[] = {
 };
 
 par_token *current_token;
+/* Declaração do hashmap */
+map_t map_par_token = NULL;
+map_t map_tokens_seguidores_primeiros = NULL;
+
+char * posicao;
+int line;
 
 int is_token_a_first_of(char* token) {
 	extern map_t map_tokens_seguidores_primeiros;
-	
+	char* primeiros;
+
 	table_tokens_seguidores_primeiros* tabela_seguidores_primeiros;
 	int erro = hashmap_get(map_tokens_seguidores_primeiros, token, &tabela_seguidores_primeiros);
 
@@ -52,9 +60,9 @@ int is_token_a_first_of(char* token) {
 		return 0;
 
 	primeiros = tabela_seguidores_primeiros->primeiros;
-	char *pch = strstr(primeiros, current_token.string);
+	char *pch = strstr(primeiros, current_token->string);
 
-	pch ? return 1 : return 0;
+	return pch ? 1 : 0;
 }
 
 /**
@@ -63,40 +71,73 @@ int is_token_a_first_of(char* token) {
 int populate_hashmap_tokens_seguidores_primeiros(map_t in) {
 	int ok = 0;
 
+
 	for(int i = 0; i < SIZE_TAB_TOKENS; i++) {
-		ok = hashmap_put(in, tab_reservados[i].string, &(tab_reservados[i]));
-		if(ok) {
-			printf("Erro em adicionar %d palavra no hashmap.\n", i);
-			return -1;
-		}
+        printf("teste");
+		ok = hashmap_put(in, tabela[i].token, &(tabela[i]));
+		// if(ok) {
+		// 	printf("Erro em adicionar %d palavra no hashmap.\n", i);
+		// 	return -1;
+		// }
 	}
+    return;
 	return 0;
 }
 
 int compare_token(char* token){
-    strcmp(token, current_token->token) == 0 ? return 1 : return 0;
+    return strcmp(token, current_token->token) == 0 ? 1 : 0;
 }
 
 void consume_terminal(char* token){
     // consome um token terminal e vê se é o token esperado com base no parametro token passado (o current token é global)
-    get_next_token();
-    return compare_token(token)
+    get_token_from_lexic();
+    return compare_token(token);
 }
 
-void get_next_token(){
-    current_token = get_token();
+void get_token_from_lexic(){
+    current_token = get_token(&posicao, &line);
 }
 
 
-void start(){
+void start(int argc, char* argv[]){
+    /* Inicialização do hashmap */
+	map_par_token = hashmap_new();
+    printf("oi 1");
+	map_tokens_seguidores_primeiros = hashmap_new();
+	populate_hashmap_par_token(map_par_token);
+	populate_hashmap_tokens_seguidores_primeiros(map_tokens_seguidores_primeiros);
+    printf("teste");
+    return;
+
+	/* Inicialização do Buffer */
+	char * buffer = new_buffer();
+	if (!buffer) {
+		printf("Erro na criação do buffer.\n");
+		return;
+	}
+	/* Verifica se devemos utilizar o arquivo de teste, ou um fornecido
+								pelo usuário */
+	char * arquivo = NULL;
+	if(argc > 1)
+		arquivo = argv[1];
+	int size = load_file(arquivo, buffer);
+
+	line = 0;
+
+	posicao = buffer;
+	//while (posicao != (buffer + size)) {
+    // get_token(&posicao, &line);
+    printf("oiu");
+    get_token_from_lexic();
     program();
+    return;
 }
 
 void program(){
     if(!is_token_a_first_of("<PROGRAM>")){
         return;
     }
-    get_next_token();
+    get_token_from_lexic();
     consume_terminal(PROGRAM);    
     consume_terminal(IDENT);
     consume_terminal(PONTO_VIRGULA);
@@ -115,14 +156,14 @@ void body(){
     consume_terminal(BEGIN);
     commands();
     consume_terminal(END);
+    return;
 }
 
 void dc(){
-    if(!is_token_a_first_of("<DC>")){
+    if(!is_token_a_first_of("<DC>"))
         return;
-    }
 
-    get_next_token();
+    get_token_from_lexic();
     dc_c();
     dc_v();
     dc_p();
@@ -137,7 +178,7 @@ void dc_c(){
     number();
     consume_terminal(PONTO_VIRGULA);
 
-    get_next_token();
+    get_token_from_lexic();
     dc_c();
 }
 
@@ -147,18 +188,18 @@ void dc_v(){
 
     consume_terminal(VAR);
 
-    get_next_token();
+    get_token_from_lexic();
     variables();
 
     consume_terminal(DOIS_PONTOS);
     
-    get_next_token();
+    get_token_from_lexic();
     var_type();
 
     consume_terminal(PONTO_VIRGULA);
 
-    get_next_token();
-    dv_v();
+    get_token_from_lexic();
+    dc_v();
 }
 
 void dc_p(){
@@ -167,15 +208,15 @@ void dc_p(){
 
     consume_terminal(IDENT);
 
-    get_next_token();
+    get_token_from_lexic();
     parameters();
 
     consume_terminal(PONTO_VIRGULA);
 
-    get_next_token();
+    get_token_from_lexic();
     program_body();
 
-    get_next_token();
+    get_token_from_lexic();
     dc_p();
 }
 
@@ -193,9 +234,9 @@ void variables(){
     }
     
     consume_terminal(IDENT);
-    get_next_token();
+    get_token_from_lexic();
     if(compare_token(VIRGULA)){
-        get_next_token();
+        get_token_from_lexic();
         variables();
     }
 }
@@ -210,17 +251,17 @@ void parameters(){
     
     consume_terminal(DOIS_PONTOS);
 
-    get_next_token();
+    get_token_from_lexic();
     var_type();
 
-    get_next_token();
+    get_token_from_lexic();
     if(compare_token(FECHA_PARENTESIS)){
         return;
     }
     if(!compare_token(PONTO_VIRGULA)){
         // deu erro
     }else{
-        goto get_variable
+        goto get_variable;
     }
 }
 void program_body(){
@@ -232,7 +273,7 @@ void program_body(){
 
     consume_terminal(BEGIN);
 
-    get_next_token();
+    get_token_from_lexic();
     commands();
 
     consume_terminal(END);
@@ -246,12 +287,12 @@ void list_arg(){
     consume_terminal(ABRE_PARENTESIS);
     ident:
     consume_terminal(IDENT);
-    get_next_token();
+    get_token_from_lexic();
     if(!compare_token(PONTO_VIRGULA)){
         consume_terminal(FECHA_PARENTESIS);
         return;
     }
-    get_next_token();
+    get_token_from_lexic();
     if(!compare_token(FECHA_PARENTESIS)){
         goto ident;
     }
@@ -264,7 +305,7 @@ void commands(){
     cmd();
     consume_terminal(PONTO_VIRGULA);
     
-    get_next_token();
+    get_token_from_lexic();
     commands();
 }
 
@@ -272,53 +313,54 @@ void cmd(){
     if(!is_token_a_first_of("<CMD>"))
         return;
 
-    switch(current_token->token){
-        case FOR:
-            get_next_token();
+    switch(current_token->id){
+        case CASE_FOR:
+            get_token_from_lexic();
             atribuition();
             consume_terminal(TO);
             number();
             consume_terminal(DO);
-            get_next_token();
+            get_token_from_lexic();
             cmd();
             return;
-        case BEGIN:
-            get_next_token();
+        case CASE_BEGIN:
+            get_token_from_lexic();
             commands();
             consume_terminal(END);
             return;
-        case WRITE:
+        case CASE_WRITE:
             consume_terminal(ABRE_PARENTESIS);
             variables();
             consume_terminal(FECHA_PARENTESIS);
             return;
-        case READ:
+        case CASE_READ:
             consume_terminal(ABRE_PARENTESIS);
             variables();
             consume_terminal(FECHA_PARENTESIS);
             return;
-        case WHILE:
+        case CASE_WHILE:
             consume_terminal(ABRE_PARENTESIS);
-            get_next_token();
+            get_token_from_lexic();
             condition();
             consume_terminal(FECHA_PARENTESIS);
             consume_terminal(DO);
-            get_next_token();
+            get_token_from_lexic();
             cmd();
             return;
-        case IF:
-            get_next_token();
+        case CASE_IF:
+            get_token_from_lexic();
             condition();
             consume_terminal(THEN);
-            get_next_token();
+            get_token_from_lexic();
             cmd();
             consume_terminal(ELSE);
-            get_next_token();
+            get_token_from_lexic();
             cmd();
-        case IDENT:
-            get_next_token();
+        case CASE_IDENT:
+            get_token_from_lexic();
             atribuition();
-        case default:
+        default:
+            break;
         //da erro
     }
 }
@@ -332,18 +374,18 @@ void atribuition(){
     }
 
     consume_terminal(DOIS_PONTOS_IGUAL);
-    get_next_token();
-    expressao();
+    get_token_from_lexic();
+    expression();
 }
 
 void condition(){
     if(!is_token_a_first_of("<CONDICAO>"))
         return;
     
-    get_next_token();
+    get_token_from_lexic();
     expression();    
 
-    get_next_token();
+    get_token_from_lexic();
     if(compare_token(IGUAL) || 
         compare_token(MAIOR_IGUAL) ||
         compare_token(MENOR_IGUAL) ||  
@@ -351,13 +393,13 @@ void condition(){
         compare_token(MENOR) || 
         compare_token(DIFERENTE)){
 
-        get_next_token();
+        get_token_from_lexic();
 
     } else{
         //da erro
     }
     
-    get_next_token();
+    get_token_from_lexic();
     expression();
 
 }
@@ -367,10 +409,10 @@ void expression(){
         return;
 
     term();
-    get_next_token();
+    get_token_from_lexic();
 
     if(compare_token(MAIS) || compare_token(MENOS)){
-        get_next_token();
+        get_token_from_lexic();
         term();
     }
 }
@@ -379,20 +421,20 @@ void term(){
     if(!is_token_a_first_of("<TERMO>"))
         return;
 
-    get_next_token();
+    get_token_from_lexic();
     if(compare_token(MAIS) || compare_token(MENOS))
-        get_next_token();
+        get_token_from_lexic();
     
     factor();
     if(!(compare_token(MULT) || compare_token(DIV)))
         return;
     
-    get_next_token();
+    get_token_from_lexic();
     factor();
 
-    get_next_token();
-    if((compare_token(MULT) || compare_token(DIV)){
-        get_next_token();
+    get_token_from_lexic();
+    if(compare_token(MULT) || compare_token(DIV)){
+        get_token_from_lexic();
         factor();
     }
 }
@@ -402,7 +444,7 @@ void factor(){
         return;
     
     if(compare_token(ABRE_PARENTESIS)){
-        get_next_token();
+        get_token_from_lexic();
         expression();
         consume_terminal(FECHA_PARENTESIS);
     }
