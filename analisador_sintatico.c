@@ -5,44 +5,6 @@
 #include "analisador_lexico.h"
 #include "analisador_sintatico.h"
 
-#define PROGRAM "<PROGRAM>"
-#define IDENT "<IDENT>"
-#define PONTO_VIRGULA "<PONTO_VIRGULA>"
-#define PONTO "<PONTO>"
-#define BEGIN "<BEGIN>"
-#define END "<END>"
-#define CONST "<CONST>"
-#define IGUAL "<IGUAL>"
-#define VAR "<VAR>"
-#define DOIS_PONTOS "<DOIS_PONTOS>"
-#define REAL "<REAL>"
-#define INTEGER "<INTEGER>"
-#define VIRGULA "<VIRGULA>"
-#define PROCEDURE "<PROCEDURE>"
-#define ABRE_PARENTESIS "<ABRE_PARENTESIS>"
-#define FECHA_PARENTESIS "<FECHA_PARENTESIS>"
-#define ELSE "<ELSE>"
-#define READ "<READ>"
-#define WRITE "<WRITE>"
-#define WHILE "<WHILE>"
-#define DO "<DO>"
-#define IF "<IF>"
-#define THEN "<THEN>"
-#define FOR "<FOR>"
-#define TO "<TO>"
-#define DOIS_PONTOS_IGUAL "<DOIS_PONTOS_IGUAL>"
-#define DIFERENTE "<DIFERENTE>"
-#define MAIOR_IGUAL "<MAIOR_IGUAL>"
-#define MENOR_IGUAL "<MENOR_IGUAL>"
-#define MAIOR "<MAIOR>"
-#define MENOR "<MENOR>"
-#define MAIS "<MAIS>"
-#define MENOS "<MENOS>"
-#define MULT "<MULT>"
-#define DIV "<DIV>"
-#define NUM_INTEIRO "<NUM_INTEIRO>"
-#define NUM_REAL "<NUM_REAL>"
-
 table_tokens_seguidores_primeiros tabela[] = {
     {"<PROGRAMA>", "program", "λ"},
     {"<CORPO>", "const var procedure begin λ", "."},
@@ -78,6 +40,8 @@ table_tokens_seguidores_primeiros tabela[] = {
     {"<NUMERO>" ," numero_int numero_real ", " * /"}
 };
 
+par_token *current_token;
+
 int is_token_a_first_of(char* token) {
 	extern map_t map_tokens_seguidores_primeiros;
 	
@@ -87,10 +51,10 @@ int is_token_a_first_of(char* token) {
 	if (erro)
 		return 0;
 
-    primeiros = tabela_seguidores_primeiros.primeiros
-    char *pch = strstr(primeiros, current_token.string);
+	primeiros = tabela_seguidores_primeiros->primeiros;
+	char *pch = strstr(primeiros, current_token.string);
 
-    pch ? return 1 : return 0;
+	pch ? return 1 : return 0;
 }
 
 /**
@@ -110,7 +74,7 @@ int populate_hashmap_tokens_seguidores_primeiros(map_t in) {
 }
 
 int compare_token(char* token){
-    strcmp(token, current_token.token) == 0 ? return 1 : return 0;
+    strcmp(token, current_token->token) == 0 ? return 1 : return 0;
 }
 
 void consume_terminal(char* token){
@@ -230,7 +194,7 @@ void variables(){
     
     consume_terminal(IDENT);
     get_next_token();
-    if(compare_token(VIRGULA){
+    if(compare_token(VIRGULA)){
         get_next_token();
         variables();
     }
@@ -308,7 +272,7 @@ void cmd(){
     if(!is_token_a_first_of("<CMD>"))
         return;
 
-    switch(current_token.token){
+    switch(current_token->token){
         case FOR:
             get_next_token();
             atribuition();
@@ -354,7 +318,7 @@ void cmd(){
         case IDENT:
             get_next_token();
             atribuition();
-        default:
+        case default:
         //da erro
     }
 }
