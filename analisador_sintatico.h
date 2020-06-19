@@ -1,3 +1,9 @@
+#ifndef __ANALISADOR_SINTATICO_H__
+#define __ANALISADOR_SINTATICO_H__
+
+#include "analisador_lexico.h"
+#include "analisador_sintatico.h"
+
 #define SIZE_TAB_TOKENS 37		/* Tamanho da tabela de tokens. */ 
 
 #define PROGRAM "<PROGRAM>"
@@ -51,3 +57,60 @@ typedef struct {
 	char * primeiros;
 	char * seguidores;
 } table_tokens_seguidores_primeiros;
+
+
+int is_token_a_first_of(char* token);
+
+/**
+ * Função inclui no hashmap o token com seu Primeiro e Seguidor. Retorna 0 em sucesso.
+ */
+int populate_hashmap_tokens_seguidores_primeiros(map_t in); 
+
+int compare_token(char* token);
+
+void consume_terminal(char* token);
+
+void get_token_from_lexic();
+
+
+void start(int argc, char* argv[]);
+
+void program();
+
+void body();
+
+void dc();
+
+void dc_c();
+
+void dc_v();
+
+void dc_p();
+
+void var_type();
+
+void number();
+
+void variables();
+
+void parameters();
+
+void program_body();
+
+void list_arg();
+
+void commands();
+
+void cmd();
+
+void atribuition();
+
+void condition();
+
+void expression();
+
+void term();
+
+void factor();
+
+#endif __ANALISADOR_SINTATICO_H__

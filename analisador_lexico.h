@@ -1,3 +1,6 @@
+#ifndef __ANALISADOR_LEXICO__
+#define __ANALISADOR_LEXICO__
+
 #define SIZE_TAB_RESERVADAS 37		/* Tamanho da tabela de palavras reservadas. */ 
 #define BUFFER_SIZE 4096
 #include "hashmap.h"
@@ -52,3 +55,5 @@ int verify_rollback_state(int );
 int is_final_state(int );
 
 int print_token(par_token * );
+
+#endif __ANALISADOR_LEXICO__
