@@ -50,7 +50,7 @@
 #define CASE_READ 18
 #define CASE_WHILE 20
 #define CASE_IF 22
-#define CASE_IDENT 2
+#define CASE_IDENT 0
 
 typedef struct {
 	char * token;

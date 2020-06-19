@@ -7,38 +7,38 @@
 #include "hashmap.h"
 
 table_tokens_seguidores_primeiros tabela[] = {
-    {"<PROGRAMA>", "program", "λ"},
-    {"<CORPO>", "const var procedure begin λ", "."},
-    {"<DC>", "const var procedure λ", "begin"},
-    {"<DC_C>", "const λ", "var  procedure  begin"},
-    {"<DC_V>", "var λ", "procedure  begin"},
-    {"<DC_P>", "procedure λ", "begin"},
-    {"<DC_LOC>", "var λ", "begin"},
-    {"<TIPO_VAR>", "real inteiro", ";  )"},
-    {"<VARIAVEIS>", "ident", ":  )"},
-    {"<MAIS_VAR>", ", λ", ":  )"},
-    {"<PARAMETROS>", "( λ", ";"},
-    {"<LISTA_PAR>", "ident", ")"},
-    {"<MAIS_PAR>", "; λ", ")"},
-    {"<CORPO_P>", "var λ begin", "procedure  begin"},
-    {"<LISTA_ARG>", "( λ", ";"},
-    {"<ARGUMENTOS>", "ident", ")"},
-    {"<MAIS_IDENT>", "; λ", ")"},
-    {"<PFALSA>", "else λ", ";"},
-    {"<COMANDOS>", "read write while if ident begin for", "end"},
-    {"<CMD>", "read write while if ident begin for", ";"},
-    {"<CONDICAO>", "+  -  ident numero_int numero_real (", ")  then"},
-    {"<ATRIBUICAO>", "( λ :=", ";"},
-    {"<RELACAO>", "= | <> | >= | <= | > | <", "+  -  ident numero_int numero_real ("},
-    {"<EXPRESSAO>", "+ - ident numero_int numero_real (", "= <> >= <= > < ) then"},
-    {"<OP_UN>", "+ - λ", "ident numero_int numero_real ("},
-    {"<OUTROS_TERMOS>" ," + - ", " =  <>  >=  <=  >  <  )  then"},
-    {"<OP_AD>" ," + - ", " +  -  ident  numero_int numero_real  ("},
-    {"<TERMO>" ," +  -  ident  numero_int numero_real  ( ", " + -"},
-    {"<MAIS_FATORES>" ," * / ", " + -"},
-    {"<OP_MUL>" ," * / ", " ident  numero_int numero_real  ("},
-    {"<FATOR>" ," ident  numero_int numero_real  ( ", " * /"},
-    {"<NUMERO>" ," numero_int numero_real ", " * /"}
+    {"<PROGRAMA>", "<PROGRAM>", "λ"},
+    {"<CORPO>", "<CONST> <VAR> <PROCEDURE> <BEGIN> λ", "<PONTO>"},
+    {"<DC>", "<CONST> <VAR> <PROCEDURE> λ", "<BEGIN>"},
+    {"<DC_C>", "<CONST> λ", "<VAR>  <PROCEDURE>  <BEGIN>"},
+    {"<DC_V>", "<VAR> λ", "<PROCEDURE>  <BEGIN>"},
+    {"<DC_P>", "<PROCEDURE> λ", "<BEGIN>"},
+    {"<DC_LOC>", "<VAR> λ", "<BEGIN>"},
+    {"<TIPO_VAR>", "<NUM_REAL> <NUM_INTEIRO>", "<PONTO_VIRGULA>  <ABRE_PARENTESIS>"},
+    {"<VARIAVEIS>", "<IDENT>", "<DOIS_PONTOS>  <ABRE_PARENTESIS>"},
+    {"<MAIS_VAR>", ", λ", "<DOIS_PONTOS>  <ABRE_PARENTESIS>"},
+    {"<PARAMETROS>", "<ABRE_PARENTESIS> λ", "<PONTO_VIRGULA>"},
+    {"<LISTA_PAR>", "<IDENT>", "<ABRE_PARENTESIS>"},
+    {"<MAIS_PAR>", "<PONTO_VIRGULA> λ", "<ABRE_PARENTESIS>"},
+    {"<CORPO_P>", "<VAR> λ <BEGIN>", "<PROCEDURE>  <BEGIN>"},
+    {"<LISTA_ARG>", "<ABRE_PARENTESIS> λ", "<PONTO_VIRGULA>"},
+    {"<ARGUMENTOS>", "<IDENT>", "<ABRE_PARENTESIS>"},
+    {"<MAIS_IDENT>", "<PONTO_VIRGULA> λ", "<ABRE_PARENTESIS>"},
+    {"<PFALSA>", "<ELSE> λ", "<PONTO_VIRGULA>"},
+    {"<COMANDOS>", "<READ> <WRITE> <WHILE> <IF> <IDENT> <BEGIN> <FOR>", "<END>"},
+    {"<CMD>", "<READ> <WRITE> <WHILE> <IF> <IDENT> <BEGIN> <FOR>", "<PONTO_VIRGULA>"},
+    {"<CONDICAO>", "<MAIS>  <MENOS>  <IDENT> <NUM_INTEIRO> <NUM_REAL> <ABRE_PARENTESIS>", "<ABRE_PARENTESIS>  <THEN>"},
+    {"<ATRIBUICAO>", "<ABRE_PARENTESIS> λ <DOIS_PONTOS_IGUAL>", "<PONTO_VIRGULA>"},
+    {"<RELACAO>", "<IGUAL>  <DIFERENTE>  <MAIOR_IGUAL>  <MENOR_IGUAL>  <MAIOR>  <MENOR>", "<MAIS>  <MENOS>  <IDENT> <NUM_INTEIRO> <NUM_REAL> <ABRE_PARENTESIS>"},
+    {"<EXPRESSAO>", "<MAIS> <MENOS> <IDENT> <NUM_INTEIRO> <NUM_REAL> <ABRE_PARENTESIS>", "<IGUAL> <DIFERENTE> <MAIOR_IGUAL> <MENOR_IGUAL> <MAIOR> <MENOR> <ABRE_PARENTESIS> <THEN>"},
+    {"<OP_UN>", "<MAIS> <MENOS> λ", "<IDENT> <NUM_INTEIRO> <NUM_REAL> <ABRE_PARENTESIS>"},
+    {"<OUTROS_TERMOS>" ," <MAIS> <MENOS> ", " <IGUAL>  <DIFERENTE>  <MAIOR_IGUAL>  <MENOR_IGUAL>  <MAIOR>  <MENOR>  <ABRE_PARENTESIS>  <THEN>"},
+    {"<OP_AD>" ," <MAIS> <MENOS> ", " <MAIS>  <MENOS>  <IDENT>  <NUM_INTEIRO> <NUM_REAL>  <ABRE_PARENTESIS>"},
+    {"<TERMO>" ," <MAIS>  <MENOS>  <IDENT>  <NUM_INTEIRO> <NUM_REAL>  <ABRE_PARENTESIS> ", " <MAIS> <MENOS>"},
+    {"<MAIS_FATORES>" ," <MULT> <DIV> ", " <MAIS> <MENOS>"},
+    {"<OP_MUL>" ," <MULT> <DIV> ", " <IDENT>  <NUM_INTEIRO> <NUM_REAL>  <ABRE_PARENTESIS>"},
+    {"<FATOR>" ," <IDENT>  <NUM_INTEIRO> <NUM_REAL>  <ABRE_PARENTESIS> ", " <MULT> <DIV>"},
+    {"<NUMERO>" ," <NUM_INTEIRO> <NUM_REAL> ", " <MULT> <DIV>"}
 };
 
 
@@ -53,8 +53,7 @@ int is_token_a_first_of(char * token, controlador * compilador) {
 		return 0;
 
 	primeiros = tabela_seguidores_primeiros->primeiros;
-	char *pch = strstr(primeiros, compilador->current_token->string);
-
+	char *pch = strstr(primeiros, compilador->current_token->token);
 	return pch ? 1 : 0;
 }
 
@@ -63,7 +62,6 @@ int is_token_a_first_of(char * token, controlador * compilador) {
  */
 int populate_hashmap_tokens_seguidores_primeiros(map_t in) {
 	int ok = 0;
-
 
 	for(int i = 0; i < SIZE_TAB_TOKENS; i++) {
 		ok = hashmap_put(in, tabela[i].token, &(tabela[i]));
@@ -81,8 +79,9 @@ int compare_token(char* token, controlador * compilador){
 
 void consume_terminal(char* token, controlador * compilador){
     // consome um token terminal e vê se é o token esperado com base no parametro token passado (o current token é global)
+    compare_token(token, compilador);
     get_token_from_lexic(compilador);
-    return compare_token(token, compilador);
+    return;
 }
 
 void get_token_from_lexic(controlador * compilador){
@@ -123,16 +122,17 @@ void start(int argc, char* argv[]){
 }
 
 void program(controlador * compilador){
-    if(!is_token_a_first_of("<PROGRAM>", compilador)){
+    if(!is_token_a_first_of("<PROGRAMA>", compilador)){
+        printf(compilador->current_token->string);
         return;
     }
-    get_token_from_lexic(compilador);
     consume_terminal(PROGRAM, compilador);    
     consume_terminal(IDENT, compilador);
     consume_terminal(PONTO_VIRGULA, compilador);
     
     body(compilador);
     
+
     consume_terminal(PONTO, compilador); 
 }
 
@@ -152,7 +152,6 @@ void dc(controlador * compilador){
     if(!is_token_a_first_of("<DC>", compilador))
         return;
 
-    get_token_from_lexic(compilador);
     dc_c(compilador);
     dc_v(compilador);
     dc_p(compilador);
@@ -177,17 +176,14 @@ void dc_v(controlador * compilador){
 
     consume_terminal(VAR, compilador);
 
-    get_token_from_lexic(compilador);
     variables(compilador);
 
     consume_terminal(DOIS_PONTOS, compilador);
     
-    get_token_from_lexic(compilador);
     var_type(compilador);
 
     consume_terminal(PONTO_VIRGULA, compilador);
 
-    get_token_from_lexic(compilador);
     dc_v(compilador);
 }
 
@@ -197,12 +193,10 @@ void dc_p(controlador * compilador){
 
     consume_terminal(IDENT, compilador);
 
-    get_token_from_lexic(compilador);
     parameters(compilador);
 
     consume_terminal(PONTO_VIRGULA, compilador);
 
-    get_token_from_lexic(compilador);
     program_body(compilador);
 
     get_token_from_lexic(compilador);
@@ -211,8 +205,10 @@ void dc_p(controlador * compilador){
 
 void var_type(controlador * compilador){
     if(!(compare_token(NUM_INTEIRO, compilador) ||!compare_token(NUM_REAL, compilador))){
+        get_token_from_lexic(compilador);
         return; // pq tem esse return aqui? tem q chamar a funcao de erro
     }
+    get_token_from_lexic(compilador);
 }
 
 void number(controlador * compilador){}
@@ -223,7 +219,6 @@ void variables(controlador * compilador){
     }
     
     consume_terminal(IDENT, compilador);
-    get_token_from_lexic(compilador);
     if(compare_token(VIRGULA, compilador)){
         get_token_from_lexic(compilador);
         variables(compilador);
@@ -240,7 +235,6 @@ void parameters(controlador * compilador){
     
     consume_terminal(DOIS_PONTOS, compilador);
 
-    get_token_from_lexic(compilador);
     var_type(compilador);
 
     get_token_from_lexic(compilador);
@@ -263,7 +257,6 @@ void program_body(controlador * compilador){
 
     consume_terminal(BEGIN, compilador);
 
-    get_token_from_lexic(compilador);
     commands(compilador);
 
     consume_terminal(END, compilador);
@@ -277,12 +270,10 @@ void list_arg(controlador * compilador){
     consume_terminal(ABRE_PARENTESIS, compilador);
     ident:
     consume_terminal(IDENT, compilador);
-    get_token_from_lexic(compilador);
     if(!compare_token(PONTO_VIRGULA, compilador)){
         consume_terminal(FECHA_PARENTESIS, compilador);
         return;
     }
-    get_token_from_lexic(compilador);
     if(!compare_token(FECHA_PARENTESIS, compilador)){
         goto ident;
     }
@@ -295,7 +286,6 @@ void commands(controlador * compilador){
     cmd(compilador);
     consume_terminal(PONTO_VIRGULA, compilador);
     
-    get_token_from_lexic(compilador);
     commands(compilador);
 }
 
@@ -310,7 +300,6 @@ void cmd(controlador * compilador){
             consume_terminal(TO, compilador);
             number(compilador);
             consume_terminal(DO, compilador);
-            get_token_from_lexic(compilador);
             cmd(compilador);
             return;
         case CASE_BEGIN:
@@ -319,36 +308,38 @@ void cmd(controlador * compilador){
             consume_terminal(END, compilador);
             return;
         case CASE_WRITE:
+            get_token_from_lexic(compilador);
             consume_terminal(ABRE_PARENTESIS, compilador);
             variables(compilador);
             consume_terminal(FECHA_PARENTESIS, compilador);
             return;
         case CASE_READ:
+            get_token_from_lexic(compilador);
             consume_terminal(ABRE_PARENTESIS, compilador);
             variables(compilador);
             consume_terminal(FECHA_PARENTESIS, compilador);
             return;
         case CASE_WHILE:
+            get_token_from_lexic(compilador);
             consume_terminal(ABRE_PARENTESIS, compilador);
             get_token_from_lexic(compilador);
             condition(compilador);
             consume_terminal(FECHA_PARENTESIS, compilador);
             consume_terminal(DO, compilador);
-            get_token_from_lexic(compilador);
             cmd(compilador);
             return;
         case CASE_IF:
             get_token_from_lexic(compilador);
             condition(compilador);
             consume_terminal(THEN, compilador);
-            get_token_from_lexic(compilador);
             cmd(compilador);
             consume_terminal(ELSE, compilador);
-            get_token_from_lexic(compilador);
             cmd(compilador);
+            return;
         case CASE_IDENT:
             get_token_from_lexic(compilador);
             atribuition(compilador);
+            return;
         default:
             break;
         //da erro
@@ -364,7 +355,6 @@ void atribuition(controlador * compilador){
     }
 
     consume_terminal(DOIS_PONTOS_IGUAL, compilador);
-    get_token_from_lexic(compilador);
     expression(compilador);
 }
 
