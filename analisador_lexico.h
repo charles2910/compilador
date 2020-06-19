@@ -74,20 +74,53 @@ int fill_buffer(FILE * , char * );
  */
 int get_next_state(int , char );
 
+/**
+ * Função que procura por um token relativo à string passada como argumento,
+ * caso não encontre, retorna NULL. Se encontrar, retorna struct par_token.
+ */
 par_token * get_par_token(char * );
 
+/**
+ * Cria um novo buffer e retorna o endereço.
+ */
 char * new_buffer();
 
+/**
+ * Verifica se deve-se consumir o caracter. Se sim, retorna 1. Caso contrário,
+ * retorna 0.
+ */
 int consumir(int * , int );
 
+/**
+ * Retorna o próximo token contido no buffer. No caso, retorna uma
+ * struct par_token.
+ */
 par_token * get_token(char ** , int * );
 
+/**
+ * Verifica se o estado passado é um erro. Se sim, retorna 1. Caso contrário,
+ * retorna 0.
+ */
 int is_error(int );
 
+/**
+ * Função que informa o erro léxico na tela. Em caso de sucesso, retorna 0.
+ */
 int relata_erro(int , char * , int );
 
+/**
+ * Verifica se o estado é de retorno. Se sim, retorna 1. Caso contrário,
+ * retorna 0.
+ */
 int verify_rollback_state(int );
 
+/**
+ * Verifica se o estado é final. Se sim, retorna 1. Caso contrário,
+ * retorna 0.
+ */
 int is_final_state(int );
 
+/**
+ * Função que printa o token na tela. Retorna 0 em sucesso e -1 caso contrário.
+ */
 int print_token(par_token * );
