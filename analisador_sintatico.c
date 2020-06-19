@@ -73,12 +73,11 @@ int populate_hashmap_tokens_seguidores_primeiros(map_t in) {
 
 
 	for(int i = 0; i < SIZE_TAB_TOKENS; i++) {
-        printf("teste");
 		ok = hashmap_put(in, tabela[i].token, &(tabela[i]));
-		// if(ok) {
-		// 	printf("Erro em adicionar %d palavra no hashmap.\n", i);
-		// 	return -1;
-		// }
+		if(ok) {
+			printf("Erro em adicionar %d palavra no hashmap.\n", i);
+			return -1;
+		}
 	}
     return;
 	return 0;
@@ -102,12 +101,9 @@ void get_token_from_lexic(){
 void start(int argc, char* argv[]){
     /* Inicialização do hashmap */
 	map_par_token = hashmap_new();
-    printf("oi 1");
 	map_tokens_seguidores_primeiros = hashmap_new();
 	populate_hashmap_par_token(map_par_token);
 	populate_hashmap_tokens_seguidores_primeiros(map_tokens_seguidores_primeiros);
-    printf("teste");
-    return;
 
 	/* Inicialização do Buffer */
 	char * buffer = new_buffer();
@@ -127,7 +123,6 @@ void start(int argc, char* argv[]){
 	posicao = buffer;
 	//while (posicao != (buffer + size)) {
     // get_token(&posicao, &line);
-    printf("oiu");
     get_token_from_lexic();
     program();
     return;

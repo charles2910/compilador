@@ -5,7 +5,6 @@
 #include "analisador_sintatico.h"
 
 int main(int argc, char * argv[]) {
-	printf("eae man");
 	start(argc, argv);
 	return 0;
 }
