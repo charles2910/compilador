@@ -142,6 +142,10 @@ int get_next_state(int state, char simbolo) {
 	return table_of_transitions[state][(int) simbolo];
 }
 
+/**
+ * Função que procura por um token relativo à string passada como argumento,
+ * caso não encontre, retorna NULL. Se encontrar, retorna struct par_token.
+ */
 par_token * get_par_token(char * string) {
 	extern map_t map;
 	if (!string) {
@@ -161,11 +165,18 @@ par_token * get_par_token(char * string) {
 		return par;
 }
 
+/**
+ * Cria um novo buffer e retorna o endereço.
+ */
 char * new_buffer() {
 	char * buffer = (char *) malloc(BUFFER_SIZE);
 	return buffer;
 }
 
+/**
+ * Verifica se deve-se consumir o caracter. Se sim, retorna 1. Caso contrário,
+ * retorna 0.
+ */
 int consumir(int * current_char, int str_length) {
 	int consome = 0;
 	switch(*current_char) {
@@ -219,7 +230,10 @@ int consumir(int * current_char, int str_length) {
 	return consome;
 }
 
-
+/**
+ * Retorna o próximo token contido no buffer. No caso, retorna uma
+ * struct par_token.
+ */
 par_token * get_token(char ** posicao, int *line) {
 	int 	current_state = 0, 
 		str_length = 0, 
@@ -341,6 +355,10 @@ par_token * get_token(char ** posicao, int *line) {
 	return NULL;
 }
 
+/**
+ * Verifica se o estado passado é um erro. Se sim, retorna 1. Caso contrário,
+ * retorna 0.
+ */
 int is_error(int state) {
 	int error_states[] = {97, 98, 99};
 	for(int i = 0; i <  3; i++){
@@ -350,6 +368,9 @@ int is_error(int state) {
 	return 0;
 }
 
+/**
+ * Função que informa o erro léxico na tela. Em caso de sucesso, retorna 0.
+ */
 int relata_erro(int state, char * posicao, int str_length) {
 	char str[64];
 	if (state == 97) {
@@ -384,8 +405,11 @@ int relata_erro(int state, char * posicao, int str_length) {
 	}
 }
 
-int verify_rollback_state(int state)
-{
+/**
+ * Verifica se o estado é de retorno. Se sim, retorna 1. Caso contrário,
+ * retorna 0.
+ */
+int verify_rollback_state(int state) {
 	int roll_back_states[6] = {11, 12, 13, 15, 23, 25};
 	int i;
 	for(i = 0; i <  6; i++){
@@ -395,11 +419,18 @@ int verify_rollback_state(int state)
 	return 0;
 }
 
+/**
+ * Verifica se o estado é final. Se sim, retorna 1. Caso contrário,
+ * retorna 0.
+ */
 int is_final_state(int state)
 {
 	return (state >= 11 && state <= 32);
 }
 
+/**
+ * Função que printa o token na tela. Retorna 0 em sucesso e -1 caso contrário.
+ */
 int print_token(par_token * par) {
 	if (!par)
 		return -1;
