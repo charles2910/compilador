@@ -4,7 +4,7 @@
 #include "analisador_lexico.h"
 #include "analisador_sintatico.h"
 
-#define SIZE_TAB_TOKENS 37		/* Tamanho da tabela de tokens. */ 
+#define SIZE_TAB_TOKENS 32		/* Tamanho da tabela de tokens. */ 
 
 #define PROGRAM "<PROGRAM>"
 #define IDENT "<IDENT>"

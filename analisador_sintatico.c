@@ -80,7 +80,6 @@ int populate_hashmap_tokens_seguidores_primeiros(map_t in) {
 		// 	return -1;
 		// }
 	}
-    return;
 	return 0;
 }
 
