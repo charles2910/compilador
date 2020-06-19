@@ -11,11 +11,18 @@ typedef struct {
 	int id;
 } par_token;
 
+
+#ifndef __CONTROLADOR__
+#define __CONTROLADOR__
 typedef struct {
-	char * buffer;
+	map_t map_par_token;
+    map_t map_tokens_seguidores_primeiros;
+	par_token * current_token;
+	int line;
 	char * posicao;
-	int size;
+	char * buffer;
 } controlador;
+#endif
 
 /**
  * Função inclui no hashmap as palavras reservadas. Retorna 0 em sucesso.
@@ -38,13 +45,13 @@ int fill_buffer(FILE * , char * );
  */
 int get_next_state(int , char );
 
-par_token * get_par_token(char * );
+par_token * get_par_token(char *, map_t);
 
 char * new_buffer();
 
 int consumir(int * , int );
 
-par_token * get_token(char ** , int * );
+par_token * get_token(controlador *);
 
 int is_error(int );
 

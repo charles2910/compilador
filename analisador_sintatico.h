@@ -58,59 +58,71 @@ typedef struct {
 	char * seguidores;
 } table_tokens_seguidores_primeiros;
 
+#ifndef __CONTROLADOR__
+#define __CONTROLADOR__
+typedef struct {
+	map_t map_par_token;
+    map_t map_tokens_seguidores_primeiros;
+	par_token * current_token;
+	int line;
+	char * posicao;
+	char * buffer;
+} controlador;
+#endif
 
-int is_token_a_first_of(char* token);
+
+int is_token_a_first_of(char* token, controlador *);
 
 /**
  * Função inclui no hashmap o token com seu Primeiro e Seguidor. Retorna 0 em sucesso.
  */
 int populate_hashmap_tokens_seguidores_primeiros(map_t in); 
 
-int compare_token(char* token);
+int compare_token(char* token, controlador *);
 
-void consume_terminal(char* token);
+void consume_terminal(char* token, controlador *);
 
-void get_token_from_lexic();
+void get_token_from_lexic(controlador *);
 
 
 void start(int argc, char* argv[]);
 
-void program();
+void program(controlador *);
 
-void body();
+void body(controlador *);
 
-void dc();
+void dc(controlador *);
 
-void dc_c();
+void dc_c(controlador *);
 
-void dc_v();
+void dc_v(controlador *);
 
-void dc_p();
+void dc_p(controlador *);
 
-void var_type();
+void var_type(controlador *);
 
-void number();
+void number(controlador *);
 
-void variables();
+void variables(controlador *);
 
-void parameters();
+void parameters(controlador *);
 
-void program_body();
+void program_body(controlador *);
 
-void list_arg();
+void list_arg(controlador *);
 
-void commands();
+void commands(controlador *);
 
-void cmd();
+void cmd(controlador *);
 
-void atribuition();
+void atribuition(controlador *);
 
-void condition();
+void condition(controlador *);
 
-void expression();
+void expression(controlador *);
 
-void term();
+void term(controlador *);
 
-void factor();
+void factor(controlador *);
 
 #endif __ANALISADOR_SINTATICO_H__

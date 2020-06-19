@@ -146,8 +146,7 @@ int get_next_state(int state, char simbolo) {
  * Função que procura por um token relativo à string passada como argumento,
  * caso não encontre, retorna NULL. Se encontrar, retorna struct par_token.
  */
-par_token * get_par_token(char * string) {
-	extern map_t map_par_token;
+par_token * get_par_token(char * string, map_t map_par_token) {
 	if (!string) {
 		printf("\nErro em get_par_token: parâmetro string nulo.\n");
 		return NULL;
@@ -234,7 +233,7 @@ int consumir(int * current_char, int str_length) {
  * Retorna o próximo token contido no buffer. No caso, retorna uma
  * struct par_token.
  */
-par_token * get_token(char ** posicao, int *line) {
+par_token * get_token(controlador * compilador) {
 	int 	current_state = 0, 
 		str_length = 0, 
 		current_char = 1,
@@ -245,19 +244,19 @@ par_token * get_token(char ** posicao, int *line) {
 
 	char str[64], caracter[2], caracter2[3];
 
-	if (*line == 0)
-		(*line)++;
+	if (compilador->line == 0)
+		(compilador->line)++;
 
 	while(current_char) {
-		current_char = **posicao;
+		current_char = *(compilador->posicao);
 
 		if (current_char == '\n') {
-			(*line)--;
+			(compilador->line)++;
 		}
 
 		consome = consumir(&current_char, str_length);
 
-		(*posicao)++;
+		(compilador->posicao)++;
 
 		/* Checagem para ver se não é um símbolo q não pertence à linguagem */
 		if(((current_char > 32 && current_char < 40) || current_char == 63 || current_char == 64 || current_char == 124 || current_char == 126 || (current_char > 90 && current_char < 97)) &&(str_length > 0)) {
@@ -279,7 +278,7 @@ par_token * get_token(char ** posicao, int *line) {
 		erro = is_error(current_state);
 
 		if (erro) {
-			relata_erro(current_state, *posicao, str_length);
+			relata_erro(current_state, compilador->posicao, str_length);
 			return NULL;
 		}
 
@@ -299,7 +298,7 @@ par_token * get_token(char ** posicao, int *line) {
 		should_rollback = verify_rollback_state(current_state);
 
 		if (should_rollback) {
-			(*posicao)--;
+			(compilador->posicao)--;
 			str_length--;
 			if(current_state == 1)
 				str_length++;
@@ -307,7 +306,7 @@ par_token * get_token(char ** posicao, int *line) {
 
 		if (str_length > 0) {
 			for(int i = 0; i < str_length; i++) {
-				str[i] = *(*posicao - str_length + i);
+				str[i] = *(compilador->posicao - str_length + i);
 			}
 			str[str_length] = '\0';
 		}
@@ -316,7 +315,7 @@ par_token * get_token(char ** posicao, int *line) {
 
 		switch (current_state) {
 			case 11: /* é um identificador*/
-				final_par_token = get_par_token(str);
+				final_par_token = get_par_token(str, compilador->map_par_token);
 				if (!final_par_token) {
 					final_par_token = (par_token *) malloc(sizeof(par_token));
 					final_par_token->string = str;
@@ -342,12 +341,12 @@ par_token * get_token(char ** posicao, int *line) {
 
 		if (str_length > 1) {
 			strncpy(caracter2, str, 3);
-			final_par_token = get_par_token(caracter2);
+			final_par_token = get_par_token(caracter2, compilador->map_par_token);
 			print_token(final_par_token);
 			return final_par_token;
 		} else {
 			strncpy(caracter, str, 2);
-			final_par_token = get_par_token(caracter);
+			final_par_token = get_par_token(caracter, compilador->map_par_token);
 			print_token(final_par_token);
 			return final_par_token;
 		}
