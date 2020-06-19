@@ -6,12 +6,16 @@
 #include "analisador_lexico.h"
 
 /* Declaração do hashmap */
-map_t map = NULL;
+map_t map_par_token = NULL;
+map_t map_tokens_seguidores_primeiros = NULL;
 
 int main(int argc, char * argv[]) {
 	/* Inicialização do hashmap */
-	map = hashmap_new();
-	populate_hashmap(map);
+	map_par_token = hashmap_new();
+	map_tokens_seguidores_primeiros = hashmap_new();
+	populate_hashmap_par_token(map_par_token);
+	populate_hashmap_tokens_seguidores_primeiros(map_tokens_seguidores_primeiros);
+
 	/* Inicialização do Buffer */
 	char * buffer = new_buffer();
 	if (!buffer) {

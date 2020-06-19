@@ -62,7 +62,7 @@ int table_of_transitions[9][94] = {
 /**
  * Função inclui no hashmap as palavras reservadas. Retorna 0 em sucesso.
  */
-int populate_hashmap(map_t in) {
+int populate_hashmap_par_token(map_t in) {
 	int ok = 0;
 
 	for(int i = 0; i < SIZE_TAB_RESERVADAS; i++) {
@@ -147,17 +147,17 @@ int get_next_state(int state, char simbolo) {
  * caso não encontre, retorna NULL. Se encontrar, retorna struct par_token.
  */
 par_token * get_par_token(char * string) {
-	extern map_t map;
+	extern map_t map_par_token;
 	if (!string) {
 		printf("\nErro em get_par_token: parâmetro string nulo.\n");
 		return NULL;
-	} else if (!map) {
+	} else if (!map_par_token) {
 		printf("\nErro em get_par_token: parâmetro map nulo.\n");
 		return NULL;
 	}
 	
 	par_token * par;
-	int erro = hashmap_get(map, string, &par);
+	int erro = hashmap_get(map_par_token, string, &par);
 
 	if (erro)
 		return NULL;
