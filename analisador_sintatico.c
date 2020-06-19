@@ -75,8 +75,8 @@ int populate_hashmap_tokens_seguidores_primeiros(map_t in) {
 	for(int i = 0; i < SIZE_TAB_TOKENS; i++) {
 		ok = hashmap_put(in, tabela[i].token, &(tabela[i]));
 		if(ok) {
-			printf("Erro em adicionar %d palavra no hashmap.\n", i);
-			return -1;
+		 	printf("Erro em adicionar %d palavra no hashmap.\n", i);
+		 	return -1;
 		}
 	}
 	return 0;
