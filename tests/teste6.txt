@@ -3,7 +3,7 @@ const c=1;
 var a, b: integer;
 begin
 read(a);
-b:=c+a+1;
+b:=c+a+;
 write(b);
 end.
 {sexto teste, agora sem erros}

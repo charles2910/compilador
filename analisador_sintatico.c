@@ -94,7 +94,7 @@ int populate_hashmap_tokens_seguidores_primeiros(map_t in) {
 
 int compare_token(char* token, controlador * compilador){
     if(!compilador->current_token) return 0;
-    printf("%s, %s\n", compilador->current_token->string, compilador->current_token->token);
+    // printf("%s, %s\n", compilador->current_token->string, compilador->current_token->token);
     return strcmp(token, compilador->current_token->token) == 0 ? 1 : 0;
 }
 
@@ -140,7 +140,7 @@ void error_procedure(char* token, controlador* compilador){
             compilador->stack = temp_stack;
             break;
         }
-        pop_compilador(compilador);
+        pop_from_stack_aux(compilador);
     }
 }
 
@@ -151,13 +151,21 @@ int push_compilador(int value, controlador* compilador) {
     compilador->stack_aux = peek(root_aux);
 }
 
-int pop_compilador(controlador* compilador) {
+int pop_from_stack_aux(controlador* compilador) {
     pop(&root_aux);
     if(isEmpty(root_aux)){
         compilador->stack_aux = NULL;
         return;
     }
     compilador->stack_aux = peek(root_aux);
+}
+void pop_from_stack(controlador* compilador){
+    pop(&root);
+    if(isEmpty(root)){
+        compilador->stack = NULL;
+        return;
+    }
+    compilador->stack = peek(root);
 }
 
 void start(int argc, char* argv[]){
@@ -214,6 +222,7 @@ void program(controlador * compilador){
     
     if(!consume_terminal(PONTO, compilador))
         return;
+    pop_from_stack(compilador);
 }
 
 void body(controlador * compilador){
@@ -232,6 +241,7 @@ void body(controlador * compilador){
 
     if(!consume_terminal(END, compilador))
         return;
+    pop_from_stack(compilador);
 }
 
 void dc(controlador * compilador){
@@ -242,6 +252,7 @@ void dc(controlador * compilador){
     dc_c(compilador);
     dc_v(compilador);
     dc_p(compilador);
+    pop_from_stack(compilador);
 }
 
 void dc_c(controlador * compilador){
@@ -265,6 +276,7 @@ void dc_c(controlador * compilador){
     }
 
     dc_c(compilador);
+    pop_from_stack(compilador);
 }
 
 void dc_v(controlador * compilador){
@@ -283,12 +295,14 @@ void dc_v(controlador * compilador){
     if(!consume_terminal(DOIS_PONTOS, compilador))
         return;
     
-    var_type(compilador);
+    if(!var_type(compilador))
+        return;
 
     if(!consume_terminal(PONTO_VIRGULA, compilador))
         return;
 
     dc_v(compilador);
+    pop_from_stack(compilador);
 }
 
 void dc_p(controlador * compilador){
@@ -311,11 +325,14 @@ void dc_p(controlador * compilador){
 
     // get_token_from_lexic(compilador);
     dc_p(compilador);
+    pop_from_stack(compilador);
 }
 
-void var_type(controlador * compilador){
-    if(!is_token_a_first_of("<TIPO_VAR>", compilador))
-        return;
+int var_type(controlador * compilador){
+    if(!is_token_a_first_of("<TIPO_VAR>", compilador)){
+        error_procedure("<TIPO_VAR>", compilador);
+        return 0;
+    }
         //da erro
 
     // if(!(compare_token(NUM_INTEIRO, compilador) ||compare_token(NUM_REAL, compilador))){
@@ -325,7 +342,8 @@ void var_type(controlador * compilador){
     
     push_compilador(7, compilador);
     get_token_from_lexic(compilador);
-
+    pop_from_stack(compilador);
+    return 1;
 }
 
 void number(controlador * compilador){
@@ -349,6 +367,7 @@ int variables(controlador * compilador){
         get_token_from_lexic(compilador);
         variables(compilador);
     }
+    pop_from_stack(compilador);
     return 1;
 }
 
@@ -366,7 +385,8 @@ void parameters(controlador * compilador){
     if(!consume_terminal(DOIS_PONTOS, compilador))
         return;
 
-    var_type(compilador);
+    if(!var_type(compilador))
+        return;
 
     if(compare_token(FECHA_PARENTESIS, compilador)){
         consume_terminal(FECHA_PARENTESIS, compilador);
@@ -375,6 +395,7 @@ void parameters(controlador * compilador){
             return;
         goto get_variable;
     }
+    pop_from_stack(compilador);
 }
 
 void program_body(controlador * compilador){
@@ -394,6 +415,7 @@ void program_body(controlador * compilador){
         return;
     if(!consume_terminal(PONTO_VIRGULA, compilador))
         return;
+    pop_from_stack(compilador);
 }
 
 void list_arg(controlador * compilador){
@@ -414,6 +436,7 @@ void list_arg(controlador * compilador){
     if(!compare_token(FECHA_PARENTESIS, compilador)){
         goto ident;
     }
+    pop_from_stack(compilador);
 }
 
 void commands(controlador * compilador){
@@ -427,6 +450,7 @@ void commands(controlador * compilador){
         return;
     
     commands(compilador);
+    pop_from_stack(compilador);
 }
 
 void cmd(controlador * compilador){
@@ -479,7 +503,7 @@ void cmd(controlador * compilador){
             get_token_from_lexic(compilador);
             if(!consume_terminal(ABRE_PARENTESIS, compilador))
                 break;
-            get_token_from_lexic(compilador);
+            // get_token_from_lexic(compilador);
             condition(compilador);
             if(!consume_terminal(FECHA_PARENTESIS, compilador))
                 break;
@@ -493,6 +517,8 @@ void cmd(controlador * compilador){
             if(!consume_terminal(THEN, compilador))
                 break;
             cmd(compilador);
+            if(!consume_terminal(PONTO_VIRGULA, compilador))
+                break;
             if(!consume_terminal(ELSE, compilador))
                 break;
             cmd(compilador);
@@ -505,6 +531,7 @@ void cmd(controlador * compilador){
             break;
         //da erro
     }
+    pop_from_stack(compilador);
 }
 
 void atribuition(controlador * compilador){
@@ -514,11 +541,15 @@ void atribuition(controlador * compilador){
     push_compilador(21, compilador);
     if(is_token_a_first_of("<LISTA_ARG>", compilador)){
         list_arg(compilador);
+        return;
     }
 
     if(!consume_terminal(DOIS_PONTOS_IGUAL, compilador))
         return;
     expression(compilador);
+    if(compare_token(PONTO_VIRGULA, compilador))
+        return;
+    pop_from_stack(compilador);
 }
 
 void condition(controlador * compilador){
@@ -529,7 +560,7 @@ void condition(controlador * compilador){
     get_token_from_lexic(compilador);
     expression(compilador);    
 
-    get_token_from_lexic(compilador);
+    // get_token_from_lexic(compilador);
     if(compare_token(IGUAL, compilador) || 
         compare_token(MAIOR_IGUAL, compilador) ||
         compare_token(MENOR_IGUAL, compilador) ||  
@@ -545,7 +576,7 @@ void condition(controlador * compilador){
     
     get_token_from_lexic(compilador);
     expression(compilador);
-
+    pop_from_stack(compilador);
 }
 
 void expression(controlador * compilador){
@@ -553,47 +584,65 @@ void expression(controlador * compilador){
         return;
 
     push_compilador(23, compilador);
-    term(compilador);
+    if(!term(compilador))
+        return;
     get_token_from_lexic(compilador);
 
     if(compare_token(MAIS, compilador) || compare_token(MENOS, compilador)){
         get_token_from_lexic(compilador);
-        term(compilador);
+        if(!term(compilador)){
+            error_procedure("<TERMO>", compilador);
+            return;
+        }
     }
+    pop_from_stack(compilador);
 }
 
-void term(controlador * compilador){
+int term(controlador * compilador){
     if(!is_token_a_first_of("<TERMO>", compilador))
-        return;
+        return 0;
 
     push_compilador(27, compilador);
     get_token_from_lexic(compilador);
-    if(compare_token(MAIS, compilador) || compare_token(MENOS, compilador))
+
+    if(compare_token(MAIS, compilador) || compare_token(MENOS, compilador)){
         get_token_from_lexic(compilador);
+    }else if(compare_token(PONTO_VIRGULA, compilador)){
+        return 1;
+    }
+
     
-    factor(compilador);
+    if(!factor(compilador)){
+        error_procedure("<FATOR>", compilador);
+        return 0;
+    }
     if(!(compare_token(MULT, compilador) || compare_token(DIV, compilador)))
-        return;
+        return 1;
     
     get_token_from_lexic(compilador);
     factor(compilador);
 
-    get_token_from_lexic(compilador);
+    // get_token_from_lexic(compilador);
     if(compare_token(MULT, compilador) || compare_token(DIV, compilador)){
         get_token_from_lexic(compilador);
         factor(compilador);
     }
+    pop_from_stack(compilador);
+    return 1;
 }
 
-void factor(controlador * compilador){
+int factor(controlador * compilador){
     if(!is_token_a_first_of("<TERMO>", compilador))
-        return;
+        return 0;
     
     push_compilador(30, compilador);
+
     if(compare_token(ABRE_PARENTESIS, compilador)){
         get_token_from_lexic(compilador);
         expression(compilador);
         if(!consume_terminal(FECHA_PARENTESIS, compilador))
-            return;
+            return 0;
     }
+    pop_from_stack(compilador);
+    return 1;
 }

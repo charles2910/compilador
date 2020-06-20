@@ -433,6 +433,6 @@ int is_final_state(int state)
 int print_token(par_token * par) {
 	if (!par)
 		return -1;
-	printf("%s, %s\n", par->string, par->token);
+	// printf("%s, %s\n", par->string, par->token);
 	return 0;
 }

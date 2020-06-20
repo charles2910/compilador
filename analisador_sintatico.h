@@ -103,7 +103,7 @@ void dc_v(controlador *);
 
 void dc_p(controlador *);
 
-void var_type(controlador *);
+int var_type(controlador *);
 
 void number(controlador *);
 
@@ -125,8 +125,8 @@ void condition(controlador *);
 
 void expression(controlador *);
 
-void term(controlador *);
+int term(controlador *);
 
-void factor(controlador *);
+int factor(controlador *);
 
 #endif __ANALISADOR_SINTATICO_H__
