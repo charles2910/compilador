@@ -1,0 +1,12 @@
+program ok;
+const t = 3;
+var i, k: integer;
+begin
+	read(i);
+	read(k);
+	if i > k then
+		write(i);
+	else
+		write(k);
+	write(t);
+end.

@@ -1,0 +1,5 @@
+program a;
+@
+3##
+var a: integer;
+begin
