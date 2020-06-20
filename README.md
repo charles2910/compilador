@@ -1,6 +1,6 @@
 # Compilador (SCC0605 - Teoria da Computação e Compiladores: Trabalho 1)
 
-Esta fase do projeto (versão 0.1) implementa o analisador **léxico** do
+Esta fase do projeto (versão 0.2) implementa o analisador **léxico** do
 compilador.
 
 ## Requerimentos de Compilação
@@ -19,17 +19,18 @@ Sistema de teste utilizado:
 ## Instruções de Compilação
 
 Na pasta com os arquivos fonte (*.c e *.h), utilizar `make all` para compilar
-o executável `main`. Execute `make clean` para excluir os arquivos objeto (*.o)
+o executável `lexico`. Execute `make clean` para excluir os arquivos objeto (*.o)
 e o arquivo executável.
 
 ## Instruções de uso
 
-Para rodar o programa, execute `/path/to/file/main` ou `./main` se estiver no
+Para rodar o programa, execute `/path/to/file/lexico` ou `./lexico` se estiver no
 mesmo diretório que o executável. Se não houver argumentos, o analisador léxico
 irá tomar `meu_programa.txt` como entrada.
 
 Utilizando `./main /path/to/file.txt`, o analisador léxico irá utilizar o
-arquivo fornecido como código fonte para análise.
+arquivo fornecido como código fonte para análise. Há também vários casos de
+teste em `tests/`.
 
 Para gerar um arquivo de saída com os pares string-token, redirecione a saída
 do comando como o seguinte exemplo:
@@ -37,3 +38,4 @@ do comando como o seguinte exemplo:
 ```
 ./main /path/to/file.txt > analise_lexica.txt
 ```
+
