@@ -1,6 +1,6 @@
 # Compilador (SCC0605 - Teoria da Computação e Compiladores: Trabalho 1)
 
-Esta fase do projeto (versão 0.1) implementa o analisador **léxico** do
+Esta fase do projeto (versão 0.3) implementa o analisador **sintático** do
 compilador.
 
 ## Requerimentos de Compilação
@@ -29,11 +29,12 @@ mesmo diretório que o executável. Se não houver argumentos, o analisador léx
 irá tomar `meu_programa.txt` como entrada.
 
 Utilizando `./main /path/to/file.txt`, o analisador léxico irá utilizar o
-arquivo fornecido como código fonte para análise.
+arquivo fornecido como código fonte para análise. Há também vários arquivos
+de teste no diretório `tests` que podem ser executados.
 
-Para gerar um arquivo de saída com os pares string-token, redirecione a saída
-do comando como o seguinte exemplo:
+Para gerar um arquivo de saída com os erros léxicos e sintáticos, redirecione
+a saída do comando como o seguinte exemplo:
 
 ```
-./main /path/to/file.txt > analise_lexica.txt
+./main /path/to/file.txt > analise_sintatica.txt
 ```
