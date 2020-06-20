@@ -325,20 +325,17 @@ par_token * get_token(controlador * compilador) {
 					final_par_token->string = str;
 					final_par_token->token = "<IDENT>";
 				}
-				print_token(final_par_token);
 				return final_par_token;
 			case 12: /* é um número inteiro */
 				final_par_token = (par_token *) malloc(sizeof(par_token));
 				final_par_token->string = str;
 				final_par_token->token = "<NUM_INTEIRO>";
-				print_token(final_par_token);
 				return final_par_token;
 				break;
 			case 13: /* é um número real */
 				final_par_token = (par_token *) malloc(sizeof(par_token));
 				final_par_token->string = str;
 				final_par_token->token = "<NUM_REAL>";
-				print_token(final_par_token);
 				return final_par_token;
 				break;
 		}
@@ -346,12 +343,10 @@ par_token * get_token(controlador * compilador) {
 		if (str_length > 1) {
 			strncpy(caracter2, str, 3);
 			final_par_token = get_par_token(caracter2, compilador->map_par_token);
-			print_token(final_par_token);
 			return final_par_token;
 		} else {
 			strncpy(caracter, str, 2);
 			final_par_token = get_par_token(caracter, compilador->map_par_token);
-			print_token(final_par_token);
 			return final_par_token;
 		}
 	}
@@ -437,6 +432,6 @@ int is_final_state(int state)
 int print_token(par_token * par) {
 	if (!par)
 		return -1;
-	// printf("%s, %s\n", par->string, par->token);
+	printf("%s, %s\n", par->string, par->token);
 	return 0;
 }

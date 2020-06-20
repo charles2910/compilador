@@ -94,12 +94,10 @@ int populate_hashmap_tokens_seguidores_primeiros(map_t in) {
 
 int compare_token(char* token, controlador * compilador){
     if(!compilador->current_token) return 0;
-    // printf("%s, %s\n", compilador->current_token->string, compilador->current_token->token);
     return strcmp(token, compilador->current_token->token) == 0 ? 1 : 0;
 }
 
 int consume_terminal(char* token, controlador * compilador){
-    // consome um token terminal e vê se é o token esperado com base no parametro token passado (o current token é global)
     if(!compilador->current_token){
         error_procedure(token, compilador);
         return 0;
@@ -126,7 +124,7 @@ void error_procedure(char* token, controlador* compilador){
         printf("%d: Erro -> esperava: %s -- recebi: End of File\n", compilador->line, token);
         return;
     }
-    printf("%d: Erro -> esperava: %s -- recebi: %s\n", compilador->line, token, compilador->current_token->token);
+    printf("Erro na linha: %d -> Esperava: %s Recebido: %s\n", compilador->line, token, compilador->current_token->token);
     struct StackNode* temp_stack;
     // while is not the end of the file
     while (compilador->current_token != NULL)
@@ -200,20 +198,12 @@ void start(int argc, char* argv[]){
 	compilador->line = 0;
 
 	compilador->posicao = compilador->buffer;
-	//while (posicao != (buffer + size)) {
-    // get_token(&posicao, &line);
     get_token_from_lexic(compilador);
     program(compilador);
     return;
 }
 
 void program(controlador * compilador){
-    // if(!is_token_a_first_of("<PROGRAMA>", compilador)){
-    //     // printf(compilador->current_token->string);
-    //     //seguidor de pai e o proximo depois dele, tipo id
-    //     return;
-    // }
-
     push_compilador(0, compilador);
 
     if(!consume_terminal(PROGRAM, compilador))
@@ -330,7 +320,6 @@ void dc_p(controlador * compilador){
 
     program_body(compilador);
 
-    // get_token_from_lexic(compilador);
     dc_p(compilador);
     pop_from_stack(compilador);
 }
@@ -340,12 +329,6 @@ int var_type(controlador * compilador){
         error_procedure("<TIPO_VAR>", compilador);
         return 0;
     }
-        //da erro
-
-    // if(!(compare_token(NUM_INTEIRO, compilador) ||compare_token(NUM_REAL, compilador))){
-    //     if(compare)
-    //     return; // pq tem esse return aqui? tem q chamar a funcao de erro
-    // }
     
     push_compilador(7, compilador);
     get_token_from_lexic(compilador);
@@ -355,7 +338,6 @@ int var_type(controlador * compilador){
 
 void number(controlador * compilador){
     if(!is_token_a_first_of("<NUMERO>", compilador))
-        //da erro
         return;
 
     push_compilador(31, compilador);
@@ -510,7 +492,6 @@ void cmd(controlador * compilador){
             get_token_from_lexic(compilador);
             if(!consume_terminal(ABRE_PARENTESIS, compilador))
                 break;
-            // get_token_from_lexic(compilador);
             condition(compilador);
             if(!consume_terminal(FECHA_PARENTESIS, compilador))
                 break;
@@ -536,7 +517,6 @@ void cmd(controlador * compilador){
             break;
         default:
             break;
-        //da erro
     }
     pop_from_stack(compilador);
 }
@@ -567,7 +547,6 @@ void condition(controlador * compilador){
     get_token_from_lexic(compilador);
     expression(compilador);    
 
-    // get_token_from_lexic(compilador);
     if(compare_token(IGUAL, compilador) || 
         compare_token(MAIOR_IGUAL, compilador) ||
         compare_token(MENOR_IGUAL, compilador) ||  
@@ -577,9 +556,7 @@ void condition(controlador * compilador){
 
         get_token_from_lexic(compilador);
 
-    } else{
-        //da erro
-    }
+    } 
     
     get_token_from_lexic(compilador);
     expression(compilador);
@@ -629,7 +606,6 @@ int term(controlador * compilador){
     get_token_from_lexic(compilador);
     factor(compilador);
 
-    // get_token_from_lexic(compilador);
     if(compare_token(MULT, compilador) || compare_token(DIV, compilador)){
         get_token_from_lexic(compilador);
         factor(compilador);
