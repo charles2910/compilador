@@ -100,7 +100,10 @@ int compare_token(char* token, controlador * compilador){
 
 int consume_terminal(char* token, controlador * compilador){
     // consome um token terminal e vê se é o token esperado com base no parametro token passado (o current token é global)
-    if(!compilador->current_token) return 0;
+    if(!compilador->current_token){
+        error_procedure(token, compilador);
+        return 0;
+    }
     int result = compare_token(token, compilador);
     if(!result){
         error_procedure(token, compilador);
@@ -119,6 +122,10 @@ void get_token_from_lexic(controlador * compilador){
 }
 
 void error_procedure(char* token, controlador* compilador){
+    if(!compilador->current_token){
+        printf("%d: Erro -> esperava: %s -- recebi: End of File\n", compilador->line, token);
+        return;
+    }
     printf("%d: Erro -> esperava: %s -- recebi: %s\n", compilador->line, token, compilador->current_token->token);
     struct StackNode* temp_stack;
     // while is not the end of the file
