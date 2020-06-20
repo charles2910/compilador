@@ -68,13 +68,14 @@ typedef struct {
 	int line;
 	char * posicao;
 	char * buffer;
-	node_ptr* stack;
-	node_ptr* stack_aux;
+	struct StackNode* stack;
+	struct StackNode* stack_aux;
 } controlador;
 #endif
 
 
 int is_token_a_first_of(char* token, controlador *);
+int is_token_a_follower_of(char * token, controlador * compilador);
 
 /**
  * Função inclui no hashmap o token com seu Primeiro e Seguidor. Retorna 0 em sucesso.
@@ -83,10 +84,10 @@ int populate_hashmap_tokens_seguidores_primeiros(map_t in);
 
 int compare_token(char* token, controlador *);
 
-void consume_terminal(char* token, controlador *);
+int consume_terminal(char* token, controlador *);
 
 void get_token_from_lexic(controlador *);
-
+void error_procedure(char* token, controlador* compilador);
 
 void start(int argc, char* argv[]);
 
@@ -106,7 +107,7 @@ void var_type(controlador *);
 
 void number(controlador *);
 
-void variables(controlador *);
+int variables(controlador *);
 
 void parameters(controlador *);
 

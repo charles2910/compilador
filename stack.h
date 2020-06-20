@@ -1,19 +1,16 @@
-#ifndef __STACK_H__
-#define __STACK_H__
+#ifndef __stack_H__
+#define __stack_H__
 
-#include <stdbool.h>
+struct StackNode { 
+    int data; 
+    struct StackNode* next; 
+}; 
+  
+struct StackNode* newNode(int data);
+int isEmpty(struct StackNode* root);
+void push(struct StackNode** root, int data);
+int pop(struct StackNode** root);
+struct StackNode* peek(struct StackNode* root);
 
-bool is_empty();
-bool clear();
-bool push(int value);
-bool pop();
-bool pop_aux();
-node_ptr get_top();
-
-typedef struct node{
-	int data;
-	struct node* previous;
-} *node_ptr;
-
-#endif __STACK_H__
+#endif __stack_H__
 

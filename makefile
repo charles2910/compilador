@@ -3,8 +3,8 @@
 
 all: main1
 
-main1: main.c analisador_lexico.c analisador_lexico.h analisador_sintatico.c analisador_sintatico.h hashmap.c hashmap.h
-	gcc -g -o main main.c analisador_lexico.c analisador_sintatico.c hashmap.c
+main1: main.c analisador_lexico.c analisador_lexico.h analisador_sintatico.c analisador_sintatico.h hashmap.c hashmap.h stack.c stack.h
+	gcc -g -o main main.c analisador_lexico.c analisador_sintatico.c hashmap.c stack.c
 
 main: main.o analisador_sintatico.o
 	gcc -g -o main -Wall main.o analisador_sintatico.o

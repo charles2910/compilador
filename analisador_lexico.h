@@ -4,6 +4,7 @@
 #define SIZE_TAB_RESERVADAS 37		/* Tamanho da tabela de palavras reservadas. */ 
 #define BUFFER_SIZE 4096
 #include "hashmap.h"
+#include "stack.h"
 
 typedef struct {
 	char * string;
@@ -21,6 +22,8 @@ typedef struct {
 	int line;
 	char * posicao;
 	char * buffer;
+	struct StackNode* stack;
+	struct StackNode* stack_aux;
 } controlador;
 #endif
 
