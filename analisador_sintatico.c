@@ -437,7 +437,9 @@ void cmd(controlador * compilador){
     switch(compilador->current_token->id){
         case CASE_FOR:
             get_token_from_lexic(compilador);
-            atribuition(compilador);
+            if(!consume_terminal(DOIS_PONTOS_IGUAL, compilador))
+                return;
+            expression(compilador);
             if(!consume_terminal(TO, compilador))
                 break;
             number(compilador);
