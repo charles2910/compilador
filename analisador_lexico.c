@@ -168,7 +168,7 @@ par_token * get_par_token(char * string, map_t map_par_token) {
  * Cria um novo buffer e retorna o endereço.
  */
 char * new_buffer() {
-	char * buffer = (char *) malloc(BUFFER_SIZE);
+	char * buffer = (char *) malloc(BUFFER_SIZE/2);
 	return buffer;
 }
 

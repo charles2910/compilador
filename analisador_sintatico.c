@@ -112,6 +112,10 @@ int consume_terminal(char* token, controlador * compilador){
 
 void get_token_from_lexic(controlador * compilador){
     compilador->current_token = get_token(compilador);
+	// Em caso de erro léxico, busca o próximo token
+	if (!compilador->current_token) {
+		compilador->current_token = get_token(compilador);
+	}
 }
 
 void error_procedure(char* token, controlador* compilador){
