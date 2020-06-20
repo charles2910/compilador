@@ -5,6 +5,7 @@
 #include "analisador_lexico.h"
 #include "analisador_sintatico.h"
 #include "hashmap.h"
+#include "stack.h"
 
 table_tokens_seguidores_primeiros tabela[] = {
     {"<PROGRAMA>", "<PROGRAM>", "λ"},
@@ -57,6 +58,20 @@ int is_token_a_first_of(char * token, controlador * compilador) {
 	return pch ? 1 : 0;
 }
 
+int is_token_a_follower_of(char * token, controlador * compilador) {
+	char* followers;
+
+	table_tokens_seguidores_primeiros* tabela_seguidores_primeiros;
+	int erro = hashmap_get(compilador->map_tokens_seguidores_primeiros, token, &tabela_seguidores_primeiros);
+
+	if (erro)
+		return 0;
+
+	followers = tabela_seguidores_primeiros->seguidores;
+	char *pch = strstr(followers, compilador->current_token->token);
+	return pch ? 1 : 0;
+}
+
 /**
  * Função inclui no hashmap o token com seu Primeiro e Seguidor. Retorna 0 em sucesso.
  */
@@ -77,17 +92,43 @@ int compare_token(char* token, controlador * compilador){
     return strcmp(token, compilador->current_token->token) == 0 ? 1 : 0;
 }
 
-void consume_terminal(char* token, controlador * compilador){
+int consume_terminal(char* token, controlador * compilador){
     // consome um token terminal e vê se é o token esperado com base no parametro token passado (o current token é global)
-    compare_token(token, compilador);
+
+    int result = compare_token(token, compilador);
+    if(!result){
+        error_procedure(token, compilador);
+        return 0;
+    }
     get_token_from_lexic(compilador);
-    return;
+    return 1;
 }
 
 void get_token_from_lexic(controlador * compilador){
     compilador->current_token = get_token(compilador);
 }
 
+void error_procedure(char* token, controlador* compilador){
+    // levanta o erro
+
+    node_ptr* temp_stack = compilador->stack_aux;
+    // while is not the end of the file
+    while (compilador->current_token != NULL)
+    {
+        if(temp_stack == NULL){ // if got in the end of the stack
+            get_token_from_lexic(compilador);
+            compilador->stack_aux = compilador->stack;
+        }
+        
+        int is_follower = is_token_a_follower_of(tabela[temp_stack->data].token, compilador);
+        if(is_follower){ // if found a follower, current_token is the follower and temp_stack is the new stack
+            compilador->stack = temp_stack;
+            break;
+        }
+        pop_aux();
+    }
+    
+}
 
 void start(int argc, char* argv[]){
     controlador * compilador = (controlador *) malloc(sizeof(controlador));
@@ -124,23 +165,34 @@ void start(int argc, char* argv[]){
 void program(controlador * compilador){
     if(!is_token_a_first_of("<PROGRAMA>", compilador)){
         printf(compilador->current_token->string);
+        //seguidor de pai e o proximo depois dele, tipo id
         return;
     }
-    consume_terminal(PROGRAM, compilador);    
-    consume_terminal(IDENT, compilador);
-    consume_terminal(PONTO_VIRGULA, compilador);
-    
-    body(compilador);
-    
 
-    consume_terminal(PONTO, compilador); 
+    push(0);
+
+    if(!consume_terminal(PROGRAM, compilador))
+        return 0;
+
+    if(!consume_terminal(IDENT, compilador))
+        return 0;
+
+    if(!consume_terminal(PONTO_VIRGULA, compilador))
+        return 0;
+
+    if(!body(compilador))
+        return 0;
+    
+    if(!consume_terminal(PONTO, compilador))
+        return 0;
 }
 
-void body(controlador * compilador){
+int body(controlador * compilador
     if(!is_token_a_first_of("<CORPO>", compilador)){
         return;
     }
 
+    push(1);
     dc(compilador);
     consume_terminal(BEGIN,compilador);
     commands(compilador);
@@ -148,18 +200,21 @@ void body(controlador * compilador){
     return;
 }
 
-void dc(controlador * compilador){
+int dc(controlador * compilador){
     if(!is_token_a_first_of("<DC>", compilador))
         return;
 
+    push(2);
     dc_c(compilador);
     dc_v(compilador);
     dc_p(compilador);
 }
 
-void dc_c(controlador * compilador){
+int dc_c(controlador * compilador){
     if(!is_token_a_first_of("<DC_C>", compilador))
         return;
+
+    push(3);
     consume_terminal(CONST, compilador);
     consume_terminal(IDENT, compilador);
     consume_terminal(IGUAL, compilador);
@@ -170,10 +225,11 @@ void dc_c(controlador * compilador){
     dc_c(compilador);
 }
 
-void dc_v(controlador * compilador){
+int dc_v(controlador * compilador){
     if(!is_token_a_first_of("<DC_V>", compilador))
         return;
 
+    push(4);
     consume_terminal(VAR, compilador);
 
     variables(compilador);
@@ -187,10 +243,11 @@ void dc_v(controlador * compilador){
     dc_v(compilador);
 }
 
-void dc_p(controlador * compilador){
+int dc_p(controlador * compilador){
     if(!is_token_a_first_of("<DC_P>", compilador))
         return;
 
+    push(5);
     consume_terminal(IDENT, compilador);
 
     parameters(compilador);
@@ -203,21 +260,31 @@ void dc_p(controlador * compilador){
     dc_p(compilador);
 }
 
-void var_type(controlador * compilador){
+int var_type(controlador * compilador){
     if(!(compare_token(NUM_INTEIRO, compilador) ||!compare_token(NUM_REAL, compilador))){
         get_token_from_lexic(compilador);
         return; // pq tem esse return aqui? tem q chamar a funcao de erro
     }
+    
+    push(7);
     get_token_from_lexic(compilador);
 }
 
-void number(controlador * compilador){}
+int number(controlador * compilador){
+    if(!is_token_a_first_of("<NUMERO>", compilador))
+        //da erro
+        return;
 
-void variables(controlador * compilador){
+    push(31);
+    get_token_from_lexic(compilador);
+}
+
+int variables(controlador * compilador){
     if(!is_token_a_first_of("<VARIAVEIS>", compilador)){
         return;
     }
-    
+
+    push(8);
     consume_terminal(IDENT, compilador);
     if(compare_token(VIRGULA, compilador)){
         get_token_from_lexic(compilador);
@@ -225,11 +292,11 @@ void variables(controlador * compilador){
     }
 }
 
-
-void parameters(controlador * compilador){
+int parameters(controlador * compilador){
     if(!is_token_a_first_of("<PARAMETROS>", compilador))
         return;
 
+    push(10);
     get_variable:
     variables(compilador);
     
@@ -248,11 +315,12 @@ void parameters(controlador * compilador){
     }
 }
 
-void program_body(controlador * compilador){
+int program_body(controlador * compilador){
     if(!is_token_a_first_of("<CORPO_P>", compilador)){
         return;
     }
 
+    push(13);
     dc_v(compilador);
 
     consume_terminal(BEGIN, compilador);
@@ -263,10 +331,12 @@ void program_body(controlador * compilador){
     consume_terminal(PONTO_VIRGULA, compilador);
 }
 
-void list_arg(controlador * compilador){
+int list_arg(controlador * compilador){
     if(!is_token_a_first_of("<LISTA_ARG>", compilador)){
         return;
     }
+
+    push(14);
     consume_terminal(ABRE_PARENTESIS, compilador);
     ident:
     consume_terminal(IDENT, compilador);
@@ -279,20 +349,23 @@ void list_arg(controlador * compilador){
     }
 }
 
-void commands(controlador * compilador){
+int commands(controlador * compilador){
     if(!is_token_a_first_of("<COMANDOS>", compilador)){
         return;
     }
+
+    push(18);
     cmd(compilador);
     consume_terminal(PONTO_VIRGULA, compilador);
     
     commands(compilador);
 }
 
-void cmd(controlador * compilador){
+int cmd(controlador * compilador){
     if(!is_token_a_first_of("<CMD>", compilador))
         return;
 
+    push(19);
     switch(compilador->current_token->id){
         case CASE_FOR:
             get_token_from_lexic(compilador);
@@ -301,24 +374,24 @@ void cmd(controlador * compilador){
             number(compilador);
             consume_terminal(DO, compilador);
             cmd(compilador);
-            return;
+            break;
         case CASE_BEGIN:
             get_token_from_lexic(compilador);
             commands(compilador);
             consume_terminal(END, compilador);
-            return;
+            break;
         case CASE_WRITE:
             get_token_from_lexic(compilador);
             consume_terminal(ABRE_PARENTESIS, compilador);
             variables(compilador);
             consume_terminal(FECHA_PARENTESIS, compilador);
-            return;
+            break;
         case CASE_READ:
             get_token_from_lexic(compilador);
             consume_terminal(ABRE_PARENTESIS, compilador);
             variables(compilador);
             consume_terminal(FECHA_PARENTESIS, compilador);
-            return;
+            break;
         case CASE_WHILE:
             get_token_from_lexic(compilador);
             consume_terminal(ABRE_PARENTESIS, compilador);
@@ -327,7 +400,7 @@ void cmd(controlador * compilador){
             consume_terminal(FECHA_PARENTESIS, compilador);
             consume_terminal(DO, compilador);
             cmd(compilador);
-            return;
+            break;
         case CASE_IF:
             get_token_from_lexic(compilador);
             condition(compilador);
@@ -335,21 +408,22 @@ void cmd(controlador * compilador){
             cmd(compilador);
             consume_terminal(ELSE, compilador);
             cmd(compilador);
-            return;
+            break;
         case CASE_IDENT:
             get_token_from_lexic(compilador);
             atribuition(compilador);
-            return;
+            break;
         default:
             break;
         //da erro
     }
 }
 
-void atribuition(controlador * compilador){
+int atribuition(controlador * compilador){
     if(!is_token_a_first_of("<ATRIBUICAO>", compilador))
         return;
     
+    push(21);
     if(is_token_a_first_of("<LISTA_ARG>", compilador)){
         list_arg(compilador);
     }
@@ -358,10 +432,11 @@ void atribuition(controlador * compilador){
     expression(compilador);
 }
 
-void condition(controlador * compilador){
+int condition(controlador * compilador){
     if(!is_token_a_first_of("<CONDICAO>", compilador))
         return;
     
+    push(20);
     get_token_from_lexic(compilador);
     expression(compilador);    
 
@@ -384,10 +459,11 @@ void condition(controlador * compilador){
 
 }
 
-void expression(controlador * compilador){
+int expression(controlador * compilador){
     if(!is_token_a_first_of("<EXPRESSAO>", compilador))
         return;
 
+    push(23);
     term(compilador);
     get_token_from_lexic(compilador);
 
@@ -397,10 +473,11 @@ void expression(controlador * compilador){
     }
 }
 
-void term(controlador * compilador){
+int term(controlador * compilador){
     if(!is_token_a_first_of("<TERMO>", compilador))
         return;
 
+    push(27);
     get_token_from_lexic(compilador);
     if(compare_token(MAIS, compilador) || compare_token(MENOS, compilador))
         get_token_from_lexic(compilador);
@@ -419,10 +496,11 @@ void term(controlador * compilador){
     }
 }
 
-void factor(controlador * compilador){
+int factor(controlador * compilador){
     if(!is_token_a_first_of("<TERMO>", compilador))
         return;
     
+    push(30);
     if(compare_token(ABRE_PARENTESIS, compilador)){
         get_token_from_lexic(compilador);
         expression(compilador);

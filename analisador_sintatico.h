@@ -3,6 +3,7 @@
 
 #include "analisador_lexico.h"
 #include "analisador_sintatico.h"
+#include "stack.h"
 
 #define SIZE_TAB_TOKENS 32		/* Tamanho da tabela de tokens. */ 
 
@@ -67,6 +68,8 @@ typedef struct {
 	int line;
 	char * posicao;
 	char * buffer;
+	node_ptr* stack;
+	node_ptr* stack_aux;
 } controlador;
 #endif
 
