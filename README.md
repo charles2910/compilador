@@ -36,6 +36,6 @@ Para gerar um arquivo de saída com os pares string-token, redirecione a saída
 do comando como o seguinte exemplo:
 
 ```
-./main /path/to/file.txt > analise_lexica.txt
+./lexico /path/to/file.txt > analise_lexica.txt
 ```
 
