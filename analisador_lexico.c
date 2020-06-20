@@ -301,6 +301,8 @@ par_token * get_token(controlador * compilador) {
 
 		if (should_rollback) {
 			(compilador->posicao)--;
+			if (*(compilador->posicao) == '\n')
+				(compilador->line)--;
 			str_length--;
 			if(current_state == 1)
 				str_length++;
