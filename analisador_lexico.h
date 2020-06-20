@@ -58,7 +58,7 @@ par_token * get_token(controlador *);
 
 int is_error(int );
 
-int relata_erro(int , char * , int );
+int relata_erro(int , char * , int, int);
 
 int verify_rollback_state(int );
 

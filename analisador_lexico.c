@@ -280,7 +280,7 @@ par_token * get_token(controlador * compilador) {
 		erro = is_error(current_state);
 
 		if (erro) {
-			relata_erro(current_state, compilador->posicao, str_length);
+			relata_erro(current_state, compilador->posicao, str_length, compilador->line);
 			return NULL;
 		}
 
@@ -369,7 +369,7 @@ int is_error(int state) {
 /**
  * Função que informa o erro léxico na tela. Em caso de sucesso, retorna 0.
  */
-int relata_erro(int state, char * posicao, int str_length) {
+int relata_erro(int state, char * posicao, int str_length, int linha) {
 	char str[64];
 	if (state == 97) {
 		par_token * token_erro1 = (par_token *) malloc(sizeof(par_token));
@@ -378,6 +378,7 @@ int relata_erro(int state, char * posicao, int str_length) {
 		token_erro1->string = (char *) calloc(sizeof(char), 2);
 		strncpy(token_erro1->string, str, 2);
 		token_erro1->token = "erro(\"fecha chaves deve vir após abre chaves\")";
+		printf("Erro na linha: %d -> ", linha);
 		print_token(token_erro1);
 		return 0;
 	} else if (state == 98) {
@@ -387,6 +388,7 @@ int relata_erro(int state, char * posicao, int str_length) {
 		token_erro1->string = (char *) calloc(sizeof(char), 2);
 		strncpy(token_erro1->string, str, 2);
 		token_erro1->token = "erro(\"caractere não permitido\")";
+		printf("Erro na linha: %d -> ", linha);
 		print_token(token_erro1);
 		return 0;
 	} else if (state == 99) {
@@ -398,6 +400,7 @@ int relata_erro(int state, char * posicao, int str_length) {
 		str[str_length] = '\0';
 		token_erro2->string = str;
 		token_erro2->token = "erro(\"Má formação de número\")";
+		printf("Erro na linha: %d -> ", linha);
 		print_token(token_erro2);
 		return 0;
 	}
